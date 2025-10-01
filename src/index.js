@@ -117,7 +117,6 @@ if (SERVICE_MODE === 'webapp') {
     }
 
     console.log('🚀 Бот запущен и готов к работе!');
-    telegramNotifications.notifyBotStart();
   }
 
   // Запуск

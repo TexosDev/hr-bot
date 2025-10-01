@@ -95,27 +95,13 @@ class TelegramNotificationService {
   }
 
   /**
-   * Отправка уведомления о запуске бота
-   * DRY: Переиспользуемая логика для статуса
-   */
-  async notifyBotStart() {
-    await this.notifyAdmin(
-      `🚀 *Бот запущен*\n\n` +
-      `Время: ${new Date().toLocaleString('ru-RU')}\n` +
-      `Статус: Все системы работают`,
-      { parse_mode: 'Markdown' }
-    );
-  }
-
-  /**
    * Проверка наличия изменений
    * KISS: Простая логика проверки
    */
   hasChanges(result) {
     const vacancies = result.vacancies || {};
-    const subscriptions = result.subscriptions || {};
     
-    return (vacancies.synced > 0 || vacancies.updated > 0 || subscriptions.synced > 0);
+    return (vacancies.synced > 0 || vacancies.updated > 0);
   }
 
   /**
