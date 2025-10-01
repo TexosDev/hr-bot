@@ -66,7 +66,7 @@ async function startBot() {
       console.log(`📡 Webhook URL: ${webhookUrl}`);
       
       // ВАЖНО: Регистрируем маршрут ДО запуска сервера
-      webhookService.app.use(bot.webhookCallback('/webhook/telegram'));
+      webhookService.app.post('/webhook/telegram', bot.webhookCallback());
       console.log('✅ Webhook маршрут зарегистрирован');
       
       // Запускаем сервер
