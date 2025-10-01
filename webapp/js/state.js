@@ -250,12 +250,23 @@ class AppState {
      * Получить данные формы для отправки
      */
     getFormDataForSubmit() {
-        return {
+        const formData = {
             ...this._state.formData,
             category: this._state.selectedCategory,
             skills: this._state.selectedSkills,
             hasResumeFile: !!this._state.uploadedFile
         };
+
+        // Добавляем реальный Telegram ID если доступен через WebApp API
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+            const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+            if (tgUser && tgUser.id) {
+                formData.telegramUserId = tgUser.id;
+                console.log('✅ Telegram User ID получен:', tgUser.id);
+            }
+        }
+
+        return formData;
     }
 
     /**

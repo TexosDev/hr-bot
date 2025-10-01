@@ -17,14 +17,16 @@ router.post('/complete', async (req, res) => {
             firstName, lastName, email, telegram,
             category, skills, experienceYears, workFormat,
             geoPreference, salaryExpectation, profileLink,
-            hasResumeFile
+            hasResumeFile,
+            telegramUserId // ✅ НОВОЕ: реальный Telegram ID из WebApp API
         } = req.body;
 
         console.log('📝 Получены данные из WebApp:', {
             firstName, lastName, email, telegram,
             category, skills, experienceYears, workFormat,
             geoPreference, salaryExpectation, profileLink,
-            hasResumeFile
+            hasResumeFile,
+            telegramUserId // Логируем реальный ID
         });
 
         // Валидация данных
@@ -35,9 +37,11 @@ router.post('/complete', async (req, res) => {
             });
         }
 
-        // Создаем пользователя (пока без Telegram ID)
-        // Используем отрицательные числа для WebApp пользователей (Telegram ID всегда положительные)
-        const userId = -Math.abs(Date.now()); // Отрицательное число для отличия от реальных Telegram ID
+        // ✅ ИСПРАВЛЕНО: используем реальный Telegram ID если доступен
+        // Иначе создаем временный отрицательный ID
+        const userId = telegramUserId || -Math.abs(Date.now());
+        
+        console.log(`💡 Используем User ID: ${userId} ${telegramUserId ? '(реальный Telegram ID)' : '(временный ID)'}`);
         
         const user = {
             id: userId,
