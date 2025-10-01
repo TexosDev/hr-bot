@@ -54,37 +54,22 @@ async function startBot() {
   telegramNotifications.initialize();
   syncScheduler.start();
 
-  // Запуск бота в зависимости от режима
+  // УПРОЩЁННАЯ АРХИТЕКТУРА:
+  // 1. Бот работает в polling режиме (надёжно, работает везде)
+  // 2. HTTP сервер для WebApp запускается параллельно
+  
+  console.log('📱 Запуск Telegram бота (polling режим)...');
+  await bot.launch();
+  console.log('✅ Telegram бот запущен');
+  
+  // Запускаем HTTP сервер для WebApp, если включен
   if (process.env.ENABLE_WEBHOOK === 'true') {
-    console.log('🌐 Режим: Webhook');
-    
-    // Получаем публичный URL (Railway устанавливает автоматически)
-    const domain = process.env.RAILWAY_PUBLIC_DOMAIN || process.env.WEBHOOK_DOMAIN;
-    
-    if (domain) {
-      const webhookUrl = `https://${domain}/webhook/telegram`;
-      console.log(`📡 Webhook URL: ${webhookUrl}`);
-      
-      // ВАЖНО: Регистрируем маршрут ДО запуска сервера
-      webhookService.app.post('/webhook/telegram', bot.webhookCallback());
-      console.log('✅ Webhook маршрут зарегистрирован');
-      
-      // Запускаем сервер
-      await webhookService.start();
-      
-      // Устанавливаем webhook в Telegram
-      await bot.telegram.setWebhook(webhookUrl);
-      console.log('✅ Webhook установлен в Telegram');
-    } else {
-      console.warn('⚠️ WEBHOOK_DOMAIN не установлен, используем polling');
-      await bot.launch();
-    }
-  } else {
-    console.log('📱 Режим: Polling (для локальной разработки)');
-    await bot.launch();
+    console.log('🌐 Запуск HTTP сервера для WebApp...');
+    await webhookService.start();
+    console.log('✅ HTTP сервер для WebApp запущен');
   }
 
-  console.log('🚀 Бот запущен!');
+  console.log('🚀 Все сервисы запущены!');
   telegramNotifications.notifyBotStart();
 }
 
