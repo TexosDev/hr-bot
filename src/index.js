@@ -9,7 +9,6 @@ import { CONFIG } from './config/constants.js';
 import { CommandManager } from './commands/CommandManager.js';
 import { ActionManager } from './actions/ActionManager.js';
 import { syncScheduler } from './services/scheduler.js';
-import { webhookService } from './services/webhook.js';
 import { telegramNotifications } from './services/telegram-notifications.js';
 
 console.log('🔍 Проверка конфигурации...');
@@ -54,20 +53,29 @@ async function startBot() {
   telegramNotifications.initialize();
   syncScheduler.start();
 
-  // УПРОЩЁННАЯ АРХИТЕКТУРА:
-  // 1. Бот работает в polling режиме (надёжно, работает везде)
-  // 2. HTTP сервер для WebApp запускается параллельно
+  // ЧИСТАЯ АРХИТЕКТУРА: только Telegram бот
+  // HTTP сервер для WebApp теперь отдельный сервис (scripts/start-webapp-production.js)
   
   console.log('📱 Запуск Telegram бота (polling режим)...');
-  await bot.launch();
-  console.log('✅ Telegram бот запущен');
   
-  // Запускаем HTTP сервер для WebApp (всегда на production)
-  console.log('🌐 Запуск HTTP сервера для WebApp...');
-  await webhookService.start();
-  console.log('✅ HTTP сервер для WebApp запущен');
+  // Обрабатываем ошибку 409 (временные конфликты при деплое)
+  try {
+    await bot.launch();
+    console.log('✅ Telegram бот запущен');
+  } catch (error) {
+    if (error.response?.error_code === 409) {
+      console.warn('⚠️ Ошибка 409: другой экземпляр бота уже запущен');
+      console.warn('💡 Это нормально при перезапусках Railway, ждём...');
+      // Ждём 5 секунд и пробуем снова
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      await bot.launch();
+      console.log('✅ Telegram бот запущен (второй попытка)');
+    } else {
+      throw error;
+    }
+  }
 
-  console.log('🚀 Все сервисы запущены!');
+  console.log('🚀 Бот запущен и готов к работе!');
   telegramNotifications.notifyBotStart();
 }
 
@@ -77,15 +85,13 @@ startBot().catch(err => {
   process.exit(1);
 });
 process.once('SIGINT', () => {
-  console.log('⏹️ Остановка сервисов...');
+  console.log('⏹️ Остановка бота...');
   syncScheduler.stop();
-  webhookService.stop();
   bot.stop('SIGINT');
 });
 
 process.once('SIGTERM', () => {
-  console.log('⏹️ Остановка сервисов...');
+  console.log('⏹️ Остановка бота...');
   syncScheduler.stop();
-  webhookService.stop();
   bot.stop('SIGTERM');
 });

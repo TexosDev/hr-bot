@@ -8,6 +8,7 @@
     },
     "scripts": {
         "start": "node src/index.js",
+        "start:webapp": "node scripts/start-webapp-production.js",
         "dev": "node src/index.js",
         "sync": "node scripts/sync-vacancies.js",
         "sync-questions": "node scripts/sync-survey-questions.js",
