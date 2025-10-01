@@ -57,21 +57,24 @@ async function startBot() {
   // Запуск бота в зависимости от режима
   if (process.env.ENABLE_WEBHOOK === 'true') {
     console.log('🌐 Режим: Webhook');
-    await webhookService.start();
     
     // Получаем публичный URL (Railway устанавливает автоматически)
     const domain = process.env.RAILWAY_PUBLIC_DOMAIN || process.env.WEBHOOK_DOMAIN;
     
     if (domain) {
       const webhookUrl = `https://${domain}/webhook/telegram`;
-      console.log(`📡 Устанавливаем webhook: ${webhookUrl}`);
+      console.log(`📡 Webhook URL: ${webhookUrl}`);
       
-      // Устанавливаем webhook
-      await bot.telegram.setWebhook(webhookUrl);
-      console.log('✅ Webhook установлен');
-      
-      // Добавляем маршрут для Telegram webhook
+      // ВАЖНО: Регистрируем маршрут ДО запуска сервера
       webhookService.app.use(bot.webhookCallback('/webhook/telegram'));
+      console.log('✅ Webhook маршрут зарегистрирован');
+      
+      // Запускаем сервер
+      await webhookService.start();
+      
+      // Устанавливаем webhook в Telegram
+      await bot.telegram.setWebhook(webhookUrl);
+      console.log('✅ Webhook установлен в Telegram');
     } else {
       console.warn('⚠️ WEBHOOK_DOMAIN не установлен, используем polling');
       await bot.launch();
