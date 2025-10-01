@@ -25,10 +25,10 @@ router.post('/complete',
             category, skills, experienceYears, workFormat,
             geoPreference, salaryExpectation, profileLink,
             hasResumeFile,
-            telegramUserId // ✅ НОВОЕ: реальный Telegram ID из WebApp API
+            telegramUserId //  НОВОЕ: реальный Telegram ID из WebApp API
         } = req.body;
 
-        // ✅ БЕЗОПАСНОСТЬ: Не логируем чувствительные данные (email, telegram)
+        //  БЕЗОПАСНОСТЬ: Не логируем чувствительные данные (email, telegram)
         console.log('📝 Получен запрос на сохранение предпочтений от пользователя:', telegramUserId || 'anonymous');
 
         // Валидация данных
@@ -39,7 +39,7 @@ router.post('/complete',
             });
         }
 
-        // ✅ ИСПРАВЛЕНО: используем реальный Telegram ID если доступен
+        //  ИСПРАВЛЕНО: используем реальный Telegram ID если доступен
         // Иначе создаем временный отрицательный ID
         const userId = telegramUserId || -Math.abs(Date.now());
         

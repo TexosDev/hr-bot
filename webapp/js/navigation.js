@@ -169,7 +169,7 @@ export async function submitForm() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд timeout
 
-        // ✅ БЕЗОПАСНОСТЬ: Добавляем Telegram initData для валидации на сервере
+        //  БЕЗОПАСНОСТЬ: Добавляем Telegram initData для валидации на сервере
         const headers = {
             'Content-Type': 'application/json',
         };

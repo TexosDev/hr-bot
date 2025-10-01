@@ -21,11 +21,11 @@ class WebhookService {
   }
 
   setupMiddleware() {
-    // ✅ БЕЗОПАСНОСТЬ: Ограничение размера body
+    //  БЕЗОПАСНОСТЬ: Ограничение размера body
     this.app.use(express.json({ limit: '50kb' }));
     this.app.use(express.urlencoded({ extended: true, limit: '50kb' }));
     
-    // ✅ БЕЗОПАСНОСТЬ: CORS только для наших доменов
+    //  БЕЗОПАСНОСТЬ: CORS только для наших доменов
     this.app.use((req, res, next) => {
       const allowedOrigins = [
         process.env.WEBAPP_URL,
@@ -55,7 +55,7 @@ class WebhookService {
       next();
     });
     
-    // ✅ БЕЗОПАСНОСТЬ: Защита от timing attacks
+    //  БЕЗОПАСНОСТЬ: Защита от timing attacks
     this.app.use((req, res, next) => {
       const start = Date.now();
       res.on('finish', () => {
@@ -71,8 +71,8 @@ class WebhookService {
 
   setupRoutes() {
     this.app.use('/webapp', express.static(path.join(__dirname, '../../webapp')));
-    this.app.use('/api/survey', surveyApi); // ✅ Основное API для WebApp
-    this.app.use('/api/questions', surveyQuestionsApi); // ✅ API вопросов из Supabase
+    this.app.use('/api/survey', surveyApi); //  Основное API для WebApp
+    this.app.use('/api/questions', surveyQuestionsApi); //  API вопросов из Supabase
     this.app.post('/webhook/sheets-updated', this.handleSheetsUpdate.bind(this));
     
     this.app.post('/webhook/manual-sync', this.handleManualSync.bind(this));
@@ -93,7 +93,7 @@ class WebhookService {
       console.log('📨 Получен webhook от Google Sheets');
       const authToken = req.headers['authorization'];
       
-      // ✅ БЕЗОПАСНОСТЬ: Обязательная проверка webhook secret
+      //  БЕЗОПАСНОСТЬ: Обязательная проверка webhook secret
       if (!process.env.WEBHOOK_SECRET) {
         console.error('❌ WEBHOOK_SECRET не настроен - webhook отключен');
         return res.status(503).json({ error: 'Webhook temporarily unavailable' });
