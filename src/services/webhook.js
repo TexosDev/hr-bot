@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 class WebhookService {
   constructor() {
     this.app = express();
-    this.port = process.env.WEBHOOK_PORT || 3001;
+    this.port = process.env.PORT || process.env.WEBHOOK_PORT || 3001;
     this.isRunning = false;
     this.server = null;
     this.setupMiddleware();
