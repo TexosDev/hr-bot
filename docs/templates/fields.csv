@@ -1,0 +1,41 @@
+category_key,field_key,field_type,label,placeholder,options,is_required,is_common,display_order
+,name,string,Имя,Введите ваше имя,,TRUE,TRUE,1
+,surname,string,Фамилия,Введите вашу фамилию,,TRUE,TRUE,2
+,email,string,Email,your.email@example.com,,TRUE,TRUE,3
+,telegram,string,Telegram username,@username,,FALSE,TRUE,4
+,work_format,select,Формат работы,,"Офис, Удалёнка, Гибрид",TRUE,TRUE,5
+,geo_preference,string,Желаемое GEO,"Например: Россия, Европа",,FALSE,TRUE,6
+,salary_expectation,string,Ожидаемая зарплата,150000 руб/мес,,FALSE,TRUE,7
+,experience_level,select,Уровень опыта,,"Junior / Entry, Mid, Senior, Lead / Architect, C-level / Executive",TRUE,TRUE,8
+frontend,stack,multiselect,Стек,,"React, Vue, Angular, Next.js, Svelte, Nuxt",FALSE,FALSE,1
+frontend,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,2
+frontend,ui_focus,boolean,Фокус на UI/UX,,,FALSE,FALSE,3
+frontend,frameworks,multiselect,Фреймворки / библиотеки,,"Redux, MobX, Tailwind, Material UI, Styled Components",FALSE,FALSE,4
+backend,languages,multiselect,Языки,,"Node.js, Python, Go, Java, PHP, Rust, C#, Kotlin",FALSE,FALSE,1
+backend,databases,multiselect,Базы данных,,"PostgreSQL, MySQL, MongoDB, Redis, Cassandra, ElasticSearch",FALSE,FALSE,2
+backend,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+backend,architecture_experience,boolean,Опыт проектирования архитектуры,,,FALSE,FALSE,4
+mobile,platforms,multiselect,Платформы,,"iOS / Swift, Android / Kotlin, React Native, Flutter",FALSE,FALSE,1
+mobile,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,2
+mobile,native_focus,boolean,Фокус на native разработке,,,FALSE,FALSE,3
+data,subroles,multiselect,Специализация,,"Data Engineer, Data Scientist, ML Engineer, BI Analyst, AI Researcher",FALSE,FALSE,1
+data,tools,string,Инструменты / библиотеки,"Например: Pandas, TensorFlow, Spark",,FALSE,FALSE,2
+data,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+qa,types,multiselect,Типы тестирования,,"Manual QA, Automation, Performance, Security, SDET",FALSE,FALSE,1
+qa,tools,string,Инструменты,"Selenium, Cypress и др.",,FALSE,FALSE,2
+qa,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+security,focus,multiselect,Фокус,,"Application Security, Network Security, Cloud Security, DevSecOps, IAM",FALSE,FALSE,1
+security,certifications,string,Сертификаты,"Например: CISSP, CEH",,FALSE,FALSE,2
+security,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+product,subroles,multiselect,Роль,,"Product Manager, Product Owner, Program Manager, Technical Product Manager",FALSE,FALSE,1
+product,domains,multiselect,Домен (продуктовые направления),,"SaaS, Marketplace, Fintech, Gaming, EdTech, E-commerce",FALSE,FALSE,2
+design,focus,multiselect,Фокус,,"UX Research, UI Design, Interaction, Visual / Graphic",FALSE,FALSE,1
+design,tools,string,Инструменты,"Figma, Sketch, Adobe XD и др.",,FALSE,FALSE,2
+design,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+marketing,specializations,multiselect,Специализация,,"SEO, PPC / Ads, Growth / UA, Content / Copywriting, Social Media, Marketing Analytics, CRM / Retention",FALSE,FALSE,1
+marketing,tools,string,Инструменты,"Google Analytics, Meta Ads, Ahrefs и др.",,FALSE,FALSE,2
+marketing,experience_years,number,Опыт работы (лет),,,FALSE,FALSE,3
+crypto,experience_blockchain,number,Опыт в blockchain (лет),,,FALSE,FALSE,1
+crypto,chains,multiselect,С какими сетями работали,,"Ethereum, BSC, Polygon, Solana, Другие",FALSE,FALSE,2
+crypto,roles,multiselect,Интересующие роли,,"Smart-contract dev, DeFi analyst, Product, Community, Blockchain architect, Web3 dev",FALSE,FALSE,3
+

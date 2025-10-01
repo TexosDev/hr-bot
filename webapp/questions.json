@@ -1,0 +1,128 @@
+{
+    "common_fields": {
+      "name": { "type": "string", "label": "Имя" },
+      "surname": { "type": "string", "label": "Фамилия" },
+      "email": { "type": "string", "label": "Email" },
+      "telegram": { "type": "string", "label": "Telegram username", "optional": true },
+      "salary_expectation": { "type": "string", "label": "Ожидаемая зарплата", "optional": true },
+      "work_format": { "type": "select", "label": "Формат работы", "options": ["Офис", "Удалёнка", "Гибрид"] },
+      "geo_preference": { "type": "string", "label": "Желаемое GEO", "optional": true },
+      "experience_level": { "type": "select", "label": "Уровень опыта", "options": ["Junior / Entry", "Mid", "Senior", "Lead / Architect", "C-level / Executive"] }
+    },
+    "categories": {
+      "crypto": {
+        "extra_fields": {
+          "experience_blockchain": { "type": "number", "label": "Опыт в blockchain (лет)" },
+          "chains": { "type": "multiselect", "label": "С какими сетями работали", "options": ["Ethereum", "BSC", "Polygon", "Solana", "Другие"] },
+          "roles": { "type": "multiselect", "label": "Интересующие роли", "options": ["Smart-contract dev", "DeFi analyst", "Product", "Community", "Blockchain architect", "Web3 dev"] }
+        }
+      },
+      "c_level": {
+        "extra_fields": {
+          "target_roles": { "type": "multiselect", "label": "Интересующие роли", "options": ["CEO", "COO", "CMO", "CTO", "CFO", "CIO", "Chief Automation Officer"] },
+          "team_size": { "type": "number", "label": "Опыт управления командой (чел.)" },
+          "industries": { "type": "multiselect", "label": "Опыт по индустриям", "options": ["Fintech", "iGaming", "Crypto", "Digital Marketing", "SaaS", "E-commerce", "EdTech", "HealthTech", "Другое"] }
+        }
+      },
+      "igaming": {
+        "extra_fields": {
+          "verticals": { "type": "multiselect", "label": "Вертикали", "options": ["Casino", "Betting / Sports", "Affiliates", "Payments", "eSports"] },
+          "geo_experience": { "type": "string", "label": "Опыт по GEO (например: EU, LatAm, Asia)" },
+          "roles": { "type": "multiselect", "label": "Интересующие роли", "options": ["Affiliate Manager", "Media Buyer", "Head of Acquisition", "Retention / CRM", "Lead Generation Manager", "Traffic Manager"] }
+        }
+      },
+      "frontend": {
+        "extra_fields": {
+          "stack": { "type": "multiselect", "label": "Стек", "options": ["React", "Vue", "Angular", "Next.js", "Svelte", "Nuxt"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" },
+          "ui_focus": { "type": "boolean", "label": "Фокус на UI/UX" },
+          "frameworks": { "type": "multiselect", "label": "Фреймворки / библиотеки", "options": ["Redux", "MobX", "Tailwind", "Material UI", "Styled Components"] }
+        }
+      },
+      "backend": {
+        "extra_fields": {
+          "languages": { "type": "multiselect", "label": "Языки", "options": ["Node.js", "Python", "Go", "Java", "PHP", "Rust", "C#", "Kotlin"] },
+          "databases": { "type": "multiselect", "label": "Базы данных", "options": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Cassandra", "ElasticSearch"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" },
+          "architecture_experience": { "type": "boolean", "label": "Опыт проектирования архитектуры" }
+        }
+      },
+      "fullstack": {
+        "extra_fields": {
+          "frontend_stack": { "type": "multiselect", "label": "Frontend стек", "options": ["React", "Vue", "Angular", "Svelte"] },
+          "backend_stack": { "type": "multiselect", "label": "Backend стек", "options": ["Node.js", "Python", "Go", "Java"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "devops_infra": {
+        "extra_fields": {
+          "tools": { "type": "multiselect", "label": "Инструменты / технологии", "options": ["Docker", "Kubernetes", "Terraform", "Ansible", "CI/CD", "Prometheus", "Grafana", "AWS", "Azure", "GCP"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" },
+          "focus": { "type": "multiselect", "label": "Направления", "options": ["Site Reliability", "Infrastructure", "Platform", "Cloud", "Platform Engineering"] }
+        }
+      },
+      "data_ai": {
+        "extra_fields": {
+          "subroles": { "type": "multiselect", "label": "Специализация", "options": ["Data Engineer", "Data Scientist", "ML Engineer", "BI Analyst", "AI Researcher"] },
+          "tools": { "type": "string", "label": "Инструменты / библиотеки (например: Pandas, TensorFlow, Spark)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "qa_test": {
+        "extra_fields": {
+          "types": { "type": "multiselect", "label": "Типы тестирования", "options": ["Manual QA", "Automation", "Performance", "Security", "SDET"] },
+          "tools": { "type": "string", "label": "Инструменты (Selenium, Cypress и др.)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "security": {
+        "extra_fields": {
+          "focus": { "type": "multiselect", "label": "Фокус", "options": ["Application Security", "Network Security", "Cloud Security", "DevSecOps", "IAM"] },
+          "certifications": { "type": "string", "label": "Сертификаты (например: CISSP, CEH)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "mobile": {
+        "extra_fields": {
+          "platforms": { "type": "multiselect", "label": "Платформы", "options": ["iOS / Swift", "Android / Kotlin", "React Native", "Flutter"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" },
+          "native_focus": { "type": "boolean", "label": "Фокус на native разработке" }
+        }
+      },
+      "product": {
+        "extra_fields": {
+          "subroles": { "type": "multiselect", "label": "Роль", "options": ["Product Manager", "Product Owner", "Program Manager", "Technical Product Manager"] },
+          "domains": { "type": "multiselect", "label": "Домен (продуктовые направления)", "options": ["SaaS", "Marketplace", "Fintech", "Gaming", "EdTech", "E-commerce"] }
+        }
+      },
+      "project_management": {
+        "extra_fields": {
+          "methodologies": { "type": "multiselect", "label": "Методологии", "options": ["Scrum", "Kanban", "Waterfall", "Agile", "SAFe"] },
+          "tools": { "type": "string", "label": "Инструменты (Jira, Asana и др.)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "ux_ui_design": {
+        "extra_fields": {
+          "focus": { "type": "multiselect", "label": "Фокус", "options": ["UX Research", "UI Design", "Interaction", "Visual / Graphic"] },
+          "tools": { "type": "string", "label": "Инструменты (Figma, Sketch, Adobe XD и др.)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "digital_marketing": {
+        "extra_fields": {
+          "specializations": { "type": "multiselect", "label": "Специализация", "options": ["SEO", "PPC / Ads", "Growth / UA", "Content / Copywriting", "Social Media", "Marketing Analytics", "CRM / Retention"] },
+          "tools": { "type": "string", "label": "Инструменты (Google Analytics, Meta Ads, Ahrefs и др.)" },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" }
+        }
+      },
+      "support_it": {
+        "extra_fields": {
+          "roles": { "type": "multiselect", "label": "Роли", "options": ["Helpdesk / Support", "IT Support Engineer", "Systems Administrator", "Network Admin"] },
+          "experience_years": { "type": "number", "label": "Опыт работы (лет)" },
+          "certifications": { "type": "string", "label": "Сертификаты (например: CompTIA, Microsoft)" }
+        }
+      }
+    }
+  }
+  

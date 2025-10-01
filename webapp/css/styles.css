@@ -1,0 +1,840 @@
+/**
+ * Стили для WebApp профиля разработчика
+ * Структурированные и оптимизированные стили
+ */
+
+/* ========================================
+   ГЛОБАЛЬНЫЕ СТИЛИ И СБРОС
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Исправления для выпадающих списков */
+html, body {
+    overflow-x: hidden;
+}
+
+/* Принудительно убираем ограничения overflow для выпадающих списков */
+.content, .step, .section, .form-group {
+    overflow: visible !important;
+}
+
+/* Дополнительные стили для видимости dropdown'ов */
+.dropdown-menu.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   ОСНОВНЫЕ СТИЛИ ТЕЛА И КОНТЕЙНЕРА
+======================================== */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f2f5;
+    padding: 0;
+    margin: 0;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ========================================
+   ЗАГОЛОВОК
+======================================== */
+
+.header {
+    background: #0088cc;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header .title,
+.header h1 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: white;
+}
+
+.header .subtitle,
+.header p {
+    opacity: 0.9;
+    font-size: 14px;
+    margin: 0;
+    color: white;
+}
+
+/* ========================================
+   ИНДИКАТОРЫ ПРОГРЕССА
+======================================== */
+
+.progress-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    background: #f0f2f5;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e1e5e9;
+    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.step-indicator.active {
+    background: #0088cc;
+    color: white;
+}
+
+/* ========================================
+   ОСНОВНОЙ КОНТЕНТ
+======================================== */
+
+.main {
+    flex: 1;
+    padding: 0;
+}
+
+.content {
+    padding: 16px;
+    padding-bottom: 40px;
+    background: #f0f2f5;
+    overflow: visible; /* Позволяем выпадающим спискам выходить за границы */
+}
+
+/* ========================================
+   ШАГИ ФОРМЫ
+======================================== */
+
+.step {
+    display: none;
+    overflow: visible; /* Позволяем выпадающим спискам выходить за границы */
+    animation: fadeIn 0.3s ease;
+}
+
+.step.active {
+    display: block;
+}
+
+.step-header {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 16px;
+}
+
+.step-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.step-description {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* ========================================
+   СЕКЦИИ ФОРМЫ
+======================================== */
+
+.section {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 16px;
+    overflow: visible; /* Позволяем выпадающим спискам выходить за границы */
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.section-description {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+/* ========================================
+   ПОЛЯ ФОРМЫ
+======================================== */
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background: #f8f9fa;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #0088cc;
+    background: white;
+}
+
+/* ========================================
+   КАСТОМНЫЕ DROPDOWN'Ы
+======================================== */
+
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+.dropdown-trigger {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f8f9fa;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.dropdown-trigger:hover {
+    border-color: #0088cc;
+    background: white;
+}
+
+.dropdown-trigger.active {
+    border-color: #0088cc;
+    background: white;
+    box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.1);
+    z-index: 10000;
+    position: relative;
+}
+
+.dropdown-arrow {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+}
+
+.dropdown-trigger.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    margin-top: 4px;
+}
+
+.dropdown-menu.show {
+    display: block !important;
+}
+
+.dropdown-item {
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f2f5;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.dropdown-item.selected {
+    background: #e3f2fd;
+    color: #0088cc;
+    font-weight: 500;
+}
+
+/* ========================================
+   ТЕГИ ОПЫТА РАБОТЫ
+======================================== */
+
+.experience-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.experience-tag {
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border: 2px solid #e1e5e9;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    user-select: none;
+}
+
+.experience-tag:hover {
+    background: #e8f4f8;
+    border-color: #0088cc;
+    transform: translateY(-2px);
+}
+
+.experience-tag.selected {
+    background: #0088cc;
+    border-color: #0088cc;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3);
+}
+
+/* ========================================
+   НАВЫКИ
+======================================== */
+
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid #e1e5e9;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #f8f9fa;
+    font-size: 13px;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.skill-tag:hover {
+    border-color: #0088cc;
+    background: #e3f2fd;
+}
+
+.skill-tag.selected {
+    border-color: #0088cc;
+    background: #0088cc;
+    color: white;
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+/* ========================================
+   КАТЕГОРИИ
+======================================== */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+@media (min-width: 480px) {
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+.category-card {
+    padding: 16px;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.category-card:hover {
+    border-color: #0088cc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2);
+}
+
+.category-card.selected {
+    border-color: #0088cc;
+    background: #0088cc;
+    color: white;
+}
+
+.category-card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.category-card p {
+    font-size: 12px;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+/* ========================================
+   ЗАГРУЗКА ФАЙЛОВ
+======================================== */
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 16px;
+    border: 2px dashed #e1e5e9;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.file-upload-button:hover {
+    border-color: #0088cc;
+    background: #e3f2fd;
+    color: #0088cc;
+}
+
+.file-upload-button.has-file {
+    border-color: #0088cc;
+    background: #e3f2fd;
+    color: #0088cc;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: #e3f2fd;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.file-name {
+    color: #0088cc;
+    font-weight: 500;
+}
+
+.file-remove {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========================================
+   КНОПКИ
+======================================== */
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    touch-action: manipulation;
+}
+
+.btn-primary {
+    background: #0088cc;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0077b3;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #666;
+    border: 1px solid #e1e5e9;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+}
+
+.btn-return {
+    width: 100%;
+    background: #f0f2f5;
+    color: #666;
+    border: 1px solid #e1e5e9;
+    margin-top: 16px;
+    padding: 12px 20px;
+    font-size: 15px;
+}
+
+.btn-return:hover {
+    background: #e9ecef;
+}
+
+/* ========================================
+   СОСТОЯНИЕ ЗАГРУЗКИ
+======================================== */
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e1e5e9;
+    border-top: 4px solid #0088cc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   АНИМАЦИИ
+======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   МОБИЛЬНАЯ ОПТИМИЗАЦИЯ
+======================================== */
+
+@media (max-width: 480px) {
+    .header {
+        padding: 16px;
+    }
+
+    .header .title,
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .header .subtitle,
+    .header p {
+        font-size: 13px;
+    }
+
+    .content {
+        padding: 12px;
+    }
+
+    .step-header {
+        padding: 12px;
+    }
+
+    .step-title {
+        font-size: 15px;
+    }
+
+    .step-description {
+        font-size: 12px;
+    }
+
+    .section {
+        padding: 12px;
+    }
+
+    .section-title {
+        font-size: 15px;
+    }
+
+    .section-description {
+        font-size: 12px;
+    }
+
+    .form-input, .form-select {
+        padding: 10px 12px;
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+
+    .skill-tag {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .category-card {
+        padding: 12px;
+    }
+
+    .category-card h3 {
+        font-size: 14px;
+    }
+
+    .category-card p {
+        font-size: 11px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .file-upload-button {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .step-indicator {
+        gap: 6px;
+    }
+
+    .step-indicator {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+
+    /* Исправление для выпадающих списков на мобильных */
+    .form-group {
+        margin-bottom: 20px; /* Увеличиваем отступ между полями */
+        position: relative;
+    }
+
+    .form-select {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .form-select:focus {
+        z-index: 1000;
+        position: relative;
+        transform: translateZ(0); /* Принудительное создание слоя */
+    }
+
+    /* Убираем overflow hidden для выпадающих списков */
+    .section {
+        overflow: visible !important;
+        position: relative;
+    }
+
+    .step {
+        overflow: visible !important;
+        position: relative;
+    }
+
+    .content {
+        overflow: visible !important;
+        position: relative;
+    }
+
+    /* Специальные стили для выпадающих списков */
+    .form-select option {
+        padding: 12px;
+        font-size: 16px;
+        background: white;
+        color: #333;
+        border: none;
+    }
+
+    /* Мобильная оптимизация для кастомных dropdown'ов */
+    .dropdown-menu {
+        max-height: 120px;
+        font-size: 14px;
+    }
+
+    .dropdown-item {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* Мобильная оптимизация для тегов опыта */
+    .experience-tags {
+        gap: 8px;
+    }
+
+    .experience-tag {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .dropdown-trigger {
+        padding: 10px 12px; /* Уменьшаем отступы */
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+}
+
+/* ========================================
+   ПЛАНШЕТНАЯ ОПТИМИЗАЦИЯ
+======================================== */
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .step-header {
+        padding: 20px;
+    }
+
+    .section {
+        padding: 20px;
+    }
+}
+
+/* ========================================
+   ДЕСКТОПНАЯ ОПТИМИЗАЦИЯ
+======================================== */
+
+@media (min-width: 769px) {
+    .app {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .content {
+        background: white;
+        padding: 32px;
+    }
+
+    .header {
+        border-radius: 0;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========================================
+   СПЕЦИАЛЬНЫЕ ИСПРАВЛЕНИЯ
+======================================== */
+
+/* Скрываем оригинальный select */
+.form-select {
+    display: none;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #0088cc;
+    background: white;
+}
+
+/* Дополнительные переменные для тем */
+:root {
+    --tg-bg-color: #ffffff;
+    --tg-text-color: #000000;
+    --tg-button-color: #0088cc;
+    --tg-button-text-color: #ffffff;
+}

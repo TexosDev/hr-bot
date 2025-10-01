@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Профиль разработчика</title>
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Фавикон -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- Основной контейнер -->
+    <div class="app">
+        <!-- Заголовок -->
+        <header class="header">
+            <h1 class="title">Профиль разработчика</h1>
+            <p class="subtitle">Заполните форму, чтобы получать релевантные вакансии</p>
+        </header>
+
+        <!-- Индикаторы прогресса -->
+        <div class="progress-indicators" id="progressIndicators"></div>
+
+        <!-- Основная форма -->
+        <main class="main">
+            <div class="content">
+                <!-- Шаг 1: Основная информация -->
+                <div class="step" id="step1">
+                    <div class="step-header">
+                        <div class="step-title">Основная информация</div>
+                        <div class="step-description">Расскажите немного о себе</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">Имя *</label>
+                                <input type="text" class="form-input" id="firstName" placeholder="Введите ваше имя">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Фамилия *</label>
+                                <input type="text" class="form-input" id="lastName" placeholder="Введите вашу фамилию">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email *</label>
+                            <input type="email" class="form-input" id="email" placeholder="your.email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="telegram">Telegram *</label>
+                            <input type="text" class="form-input" id="telegram" placeholder="@username или t.me/username">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 2: Специализация и навыки -->
+                <div class="step" id="step2" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-title">Специализация и навыки</div>
+                        <div class="step-description">Выберите вашу специализацию и ключевые навыки</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Специализация</div>
+                        <div class="section-description">Выберите основную область вашей экспертизы</div>
+
+                        <div class="category-grid" id="categoryGrid">
+                            <!-- Категории будут загружены динамически -->
+                        </div>
+
+                        <div class="section" id="skillsSection" style="display: none;">
+                            <div class="section-title">Навыки и технологии</div>
+                            <div class="section-description">Выберите ваши навыки (можно выбрать несколько)</div>
+
+                            <div class="skills-grid" id="skillsGrid">
+                                <!-- Навыки будут загружены динамически -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 3: Опыт и предпочтения -->
+                <div class="step" id="step3" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-title">Опыт работы и предпочтения</div>
+                        <div class="step-description">Расскажите о вашем опыте и предпочтениях по работе</div>
+                    </div>
+
+                    <div class="section">
+                <div class="form-group">
+                    <label class="form-label">Опыт работы *</label>
+                    <div class="experience-tags" id="experienceTags">
+                        <div class="experience-tag" data-value="Без опыта">Без опыта</div>
+                        <div class="experience-tag" data-value="< 1 года">< 1 года</div>
+                        <div class="experience-tag" data-value="1-2 года">1-2 года</div>
+                        <div class="experience-tag" data-value="2-3 года">2-3 года</div>
+                        <div class="experience-tag" data-value="3-5 лет">3-5 лет</div>
+                        <div class="experience-tag" data-value="5+ лет">5+ лет</div>
+                    </div>
+                    <input type="hidden" id="experienceYears" value="">
+                </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Формат работы *</label>
+                            <div class="custom-dropdown" id="workFormatDropdown">
+                                <div class="dropdown-trigger">
+                                    <span id="workFormatText">Выберите формат работы</span>
+                                    <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6,9 12,15 18,9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-menu" id="workFormatMenu">
+                                    <div class="dropdown-item" data-field="workFormat" data-value="Офис">Офис</div>
+                                    <div class="dropdown-item" data-field="workFormat" data-value="Удалёнка">Удалёнка</div>
+                                    <div class="dropdown-item" data-field="workFormat" data-value="Гибрид">Гибрид</div>
+                                </div>
+                            </div>
+                            <select class="form-select" id="workFormat" style="display: none;">
+                                <option value="">Выберите формат работы</option>
+                                <option value="Офис">Офис</option>
+                                <option value="Удалёнка">Удалёнка</option>
+                                <option value="Гибрид">Гибрид</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Желаемое GEO</label>
+                            <input type="text" class="form-input" id="geoPreference" placeholder="Например: Россия, Европа, США">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ожидаемая зарплата</label>
+                            <input type="text" class="form-input" id="salaryExpectation" placeholder="Например: 150000 руб/мес">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 4: Резюме -->
+                <div class="step" id="step4" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-title">Прикрепите резюме</div>
+                        <div class="step-description">Загрузите файл резюме или укажите ссылку на профиль</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="form-group">
+                            <div class="file-upload">
+                                <input type="file" class="file-upload-input" id="resumeFile" accept=".pdf,.doc,.docx">
+                                <div class="file-upload-button" id="fileUploadButton">
+                                    📎 Прикрепить файл резюме
+                                </div>
+                            </div>
+                            <div id="fileInfo" class="file-info" style="display: none;">
+                                <span class="file-name" id="fileName"></span>
+                                <button class="file-remove" id="removeFileBtn">×</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Или ссылка на профиль</label>
+                            <input type="url" class="form-input" id="profileLink" placeholder="https://hh.ru/resume/... или https://linkedin.com/in/...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Индикатор загрузки -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <div>Сохранение данных...</div>
+                </div>
+
+                <!-- Кнопки навигации -->
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="prevBtn" style="display: none;">Назад</button>
+                    <button class="btn btn-primary" id="nextBtn">Далее</button>
+                </div>
+
+                <button class="btn btn-return" id="returnBtn">Вернуться в бот</button>
+            </div><!-- .content -->
+        </main>
+    </div><!-- .app -->
+
+    <!-- JavaScript модули -->
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/state.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/validation.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

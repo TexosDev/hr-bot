@@ -1,0 +1,14 @@
+category_key,name,description,icon,display_order,is_active
+frontend,Frontend Development,Разработка пользовательских интерфейсов,🎨,1,TRUE
+backend,Backend Development,Серверная разработка и API,⚙️,2,TRUE
+fullstack,Fullstack Development,Полный цикл разработки,🚀,3,TRUE
+devops,DevOps / Infrastructure,Инфраструктура и автоматизация,🔧,4,TRUE
+mobile,Mobile Development,Мобильная разработка,📱,5,TRUE
+data,Data / AI,Анализ данных и машинное обучение,📊,6,TRUE
+qa,QA / Testing,Тестирование и обеспечение качества,🧪,7,TRUE
+security,Security,Информационная безопасность,🔒,8,TRUE
+product,Product Management,Продуктовый менеджмент,📋,9,TRUE
+design,UX/UI Design,Дизайн пользовательского интерфейса,🎨,10,TRUE
+marketing,Digital Marketing,Цифровой маркетинг,📈,11,TRUE
+crypto,Crypto / Blockchain,Блокчейн и криптовалюты,₿,12,TRUE
+

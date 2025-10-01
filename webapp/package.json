@@ -1,0 +1,19 @@
+{
+  "name": "telegram-webapp-survey",
+  "version": "1.0.0",
+  "description": "Telegram WebApp для опросов подписок на вакансии",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "serve": "python -m http.server 8080"
+  },
+  "keywords": [
+    "telegram",
+    "webapp",
+    "survey",
+    "vacancies",
+    "subscriptions"
+  ],
+  "author": "Kate Bot",
+  "license": "MIT"
+}

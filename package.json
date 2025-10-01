@@ -1,0 +1,39 @@
+{
+    "name": "tg-resume-mvp",
+    "version": "3.2.0",
+    "type": "module",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    },
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "node src/index.js",
+        "sync": "node scripts/sync-vacancies.js",
+        "sync-questions": "node scripts/sync-survey-questions.js",
+        "populate-questions": "node scripts/populate-questions-sheet.js",
+        "webhook": "node scripts/start-webhook.js",
+        "test-sync": "node scripts/test-sync.js",
+        "test": "node tests/test-supabase-connection.js",
+        "migrate": "node scripts/migrate-to-supabase.js",
+        "setup-survey": "node scripts/setup-survey-system.js",
+        "webapp": "node scripts/start-webapp-server.js",
+        "dev-server": "node scripts/start-dev-server.js",
+        "dev-full": "node scripts/start-full.js",
+        "test-webapp": "node scripts/test-webapp-system.js",
+        "check-env": "node scripts/check-env.js",
+        "check-db": "node scripts/check-database.js",
+        "fix-tags": "node scripts/fix-user-tags.js"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.58.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.2",
+        "googleapis": "^140.0.1",
+        "mammoth": "^1.6.0",
+        "node-cron": "^3.0.3",
+        "pdf2pic": "^2.1.4",
+        "telegraf": "^4.16.3"
+    }
+}
