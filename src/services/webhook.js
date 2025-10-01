@@ -40,6 +40,12 @@ class WebhookService {
     this.app.get('/health', this.handleHealthCheck.bind(this));
     
     this.app.get('/test', this.handleTest.bind(this));
+    // Примечание: catch-all маршрут НЕ регистрируем здесь, 
+    // чтобы не перехватывать /webhook/telegram который регистрируется позже
+  }
+  
+  // Метод для финализации маршрутов (вызывается после регистрации всех других маршрутов)
+  finalizeCatchAll() {
     this.app.use('*', this.handleNotFound.bind(this));
   }
 
