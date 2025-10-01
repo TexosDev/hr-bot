@@ -62,12 +62,10 @@ async function startBot() {
   await bot.launch();
   console.log('✅ Telegram бот запущен');
   
-  // Запускаем HTTP сервер для WebApp, если включен
-  if (process.env.ENABLE_WEBHOOK === 'true') {
-    console.log('🌐 Запуск HTTP сервера для WebApp...');
-    await webhookService.start();
-    console.log('✅ HTTP сервер для WebApp запущен');
-  }
+  // Запускаем HTTP сервер для WebApp (всегда на production)
+  console.log('🌐 Запуск HTTP сервера для WebApp...');
+  await webhookService.start();
+  console.log('✅ HTTP сервер для WebApp запущен');
 
   console.log('🚀 Все сервисы запущены!');
   telegramNotifications.notifyBotStart();
