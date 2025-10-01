@@ -48,15 +48,48 @@ bot.catch((err, ctx) => {
   console.error('❌ Ошибка бота:', err);
   ctx.reply('❌ Произошла ошибка. Попробуйте позже.');
 });
-console.log('🔧 Инициализация сервисов...');
-telegramNotifications.initialize();
-syncScheduler.start();
-if (process.env.ENABLE_WEBHOOK === 'true') {
-  webhookService.start();
+// Функция запуска бота
+async function startBot() {
+  console.log('🔧 Инициализация сервисов...');
+  telegramNotifications.initialize();
+  syncScheduler.start();
+
+  // Запуск бота в зависимости от режима
+  if (process.env.ENABLE_WEBHOOK === 'true') {
+    console.log('🌐 Режим: Webhook');
+    await webhookService.start();
+    
+    // Получаем публичный URL (Railway устанавливает автоматически)
+    const domain = process.env.RAILWAY_PUBLIC_DOMAIN || process.env.WEBHOOK_DOMAIN;
+    
+    if (domain) {
+      const webhookUrl = `https://${domain}/webhook/telegram`;
+      console.log(`📡 Устанавливаем webhook: ${webhookUrl}`);
+      
+      // Устанавливаем webhook
+      await bot.telegram.setWebhook(webhookUrl);
+      console.log('✅ Webhook установлен');
+      
+      // Добавляем маршрут для Telegram webhook
+      webhookService.app.use(bot.webhookCallback('/webhook/telegram'));
+    } else {
+      console.warn('⚠️ WEBHOOK_DOMAIN не установлен, используем polling');
+      await bot.launch();
+    }
+  } else {
+    console.log('📱 Режим: Polling (для локальной разработки)');
+    await bot.launch();
+  }
+
+  console.log('🚀 Бот запущен!');
+  telegramNotifications.notifyBotStart();
 }
-console.log('🚀 Бот запущен!');
-bot.launch();
-telegramNotifications.notifyBotStart();
+
+// Запуск
+startBot().catch(err => {
+  console.error('❌ Критическая ошибка запуска:', err);
+  process.exit(1);
+});
 process.once('SIGINT', () => {
   console.log('⏹️ Остановка сервисов...');
   syncScheduler.stop();
