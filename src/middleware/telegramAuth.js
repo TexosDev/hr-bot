@@ -58,7 +58,7 @@ export function validateTelegramWebAppData(initData, botToken) {
         };
 
     } catch (error) {
-        console.error('❌ Ошибка валидации Telegram данных:', error);
+        console.error(' Ошибка валидации Telegram данных:', error);
         return { valid: false, error: error.message };
     }
 }
@@ -71,7 +71,7 @@ export function telegramWebAppAuth(req, res, next) {
     const botToken = process.env.BOT_TOKEN;
 
     if (!botToken) {
-        console.error('❌ BOT_TOKEN не настроен');
+        console.error(' BOT_TOKEN не настроен');
         return res.status(500).json({
             success: false,
             error: 'Server configuration error'
@@ -80,7 +80,7 @@ export function telegramWebAppAuth(req, res, next) {
 
     // В development режиме можем пропускать валидацию
     if (process.env.NODE_ENV === 'development' && !initData) {
-        console.warn('⚠️ Development: пропускаем проверку Telegram auth');
+        console.warn(' Development: пропускаем проверку Telegram auth');
         return next();
     }
 
@@ -94,7 +94,7 @@ export function telegramWebAppAuth(req, res, next) {
     const validation = validateTelegramWebAppData(initData, botToken);
 
     if (!validation.valid) {
-        console.warn('⚠️ Неудачная валидация Telegram данных:', validation.error);
+        console.warn(' Неудачная валидация Telegram данных:', validation.error);
         return res.status(403).json({
             success: false,
             error: 'Forbidden: Invalid Telegram data'

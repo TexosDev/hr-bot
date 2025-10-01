@@ -23,7 +23,7 @@ const QUESTIONS_SHEET_ID = process.env.GOOGLE_QUESTIONS_SHEET_ID || process.env.
  */
 export async function syncCategories() {
     try {
-        console.log('🔄 Синхронизация категорий из Google Sheets...');
+        console.log(' Синхронизация категорий из Google Sheets...');
 
         const response = await sheetsService.spreadsheets.values.get({
             spreadsheetId: QUESTIONS_SHEET_ID,
@@ -33,7 +33,7 @@ export async function syncCategories() {
         const rows = response.data.values || [];
 
         if (rows.length <= 1) {
-            console.log('⚠️ Нет данных в листе "Категории"');
+            console.log(' Нет данных в листе "Категории"');
             return { success: true, synced: 0 };
         }
 
@@ -47,7 +47,7 @@ export async function syncCategories() {
                 category_key: row[0]?.trim(),
                 name: row[1]?.trim() || row[0],
                 description: row[2]?.trim() || '',
-                icon: row[3]?.trim() || '📋',
+                icon: row[3]?.trim() || '',
                 display_order: parseInt(row[4]) || 0,
                 is_active: row[5]?.toLowerCase() !== 'false'
             };
@@ -55,15 +55,15 @@ export async function syncCategories() {
             const result = await upsertCategory(categoryData);
             if (result) {
                 syncedCount++;
-                console.log(`  ✅ ${categoryData.name}`);
+                console.log(`   ${categoryData.name}`);
             }
         }
 
-        console.log(`✅ Синхронизировано ${syncedCount} категорий`);
+        console.log(` Синхронизировано ${syncedCount} категорий`);
         return { success: true, synced: syncedCount };
 
     } catch (error) {
-        console.error('❌ Ошибка синхронизации категорий:', error);
+        console.error(' Ошибка синхронизации категорий:', error);
         return { success: false, error: error.message };
     }
 }
@@ -74,7 +74,7 @@ export async function syncCategories() {
  */
 export async function syncFields() {
     try {
-        console.log('🔄 Синхронизация полей из Google Sheets...');
+        console.log(' Синхронизация полей из Google Sheets...');
 
         const response = await sheetsService.spreadsheets.values.get({
             spreadsheetId: QUESTIONS_SHEET_ID,
@@ -84,7 +84,7 @@ export async function syncFields() {
         const rows = response.data.values || [];
 
         if (rows.length <= 1) {
-            console.log('⚠️ Нет данных в листе "Поля"');
+            console.log(' Нет данных в листе "Поля"');
             return { success: true, synced: 0 };
         }
 
@@ -106,7 +106,7 @@ export async function syncFields() {
                         options = JSON.parse(row[5]);
                     }
                 } catch (e) {
-                    console.warn(`⚠️ Не удалось распарсить опции для ${row[1]}: ${row[5]}`);
+                    console.warn(` Не удалось распарсить опции для ${row[1]}: ${row[5]}`);
                 }
             }
 
@@ -126,15 +126,15 @@ export async function syncFields() {
             if (result) {
                 syncedCount++;
                 const category = fieldData.category_key || 'общее';
-                console.log(`  ✅ [${category}] ${fieldData.label}`);
+                console.log(`   [${category}] ${fieldData.label}`);
             }
         }
 
-        console.log(`✅ Синхронизировано ${syncedCount} полей`);
+        console.log(` Синхронизировано ${syncedCount} полей`);
         return { success: true, synced: syncedCount };
 
     } catch (error) {
-        console.error('❌ Ошибка синхронизации полей:', error);
+        console.error(' Ошибка синхронизации полей:', error);
         return { success: false, error: error.message };
     }
 }
@@ -144,7 +144,7 @@ export async function syncFields() {
  */
 export async function syncSurveyQuestions() {
     try {
-        console.log('🚀 Запуск полной синхронизации вопросов опроса...\n');
+        console.log(' Запуск полной синхронизации вопросов опроса...\n');
 
         // 1. Синхронизируем категории
         const categoriesResult = await syncCategories();
@@ -152,8 +152,8 @@ export async function syncSurveyQuestions() {
         // 2. Синхронизируем поля
         const fieldsResult = await syncFields();
 
-        console.log('\n🎉 Синхронизация вопросов завершена!');
-        console.log(`📊 Результаты:`);
+        console.log('\n Синхронизация вопросов завершена!');
+        console.log(` Результаты:`);
         console.log(`  - Категории: ${categoriesResult.synced} синхронизировано`);
         console.log(`  - Поля: ${fieldsResult.synced} синхронизировано`);
 
@@ -164,7 +164,7 @@ export async function syncSurveyQuestions() {
         };
 
     } catch (error) {
-        console.error('❌ Ошибка полной синхронизации вопросов:', error);
+        console.error(' Ошибка полной синхронизации вопросов:', error);
         return { success: false, error: error.message };
     }
 }

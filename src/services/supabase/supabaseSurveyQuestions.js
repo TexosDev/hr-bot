@@ -17,14 +17,14 @@ export async function getSurveyCategories() {
             .order('display_order', { ascending: true });
 
         if (error) {
-            console.error('❌ Ошибка получения категорий:', error);
+            console.error(' Ошибка получения категорий:', error);
             return [];
         }
 
-        console.log(`✅ Получено ${data.length} категорий`);
+        console.log(` Получено ${data.length} категорий`);
         return data;
     } catch (error) {
-        console.error('❌ Ошибка получения категорий:', error);
+        console.error(' Ошибка получения категорий:', error);
         return [];
     }
 }
@@ -43,7 +43,7 @@ export async function getSurveyFieldsByCategory(categoryKey) {
             .order('display_order', { ascending: true });
 
         if (error) {
-            console.error('❌ Ошибка получения полей:', error);
+            console.error(' Ошибка получения полей:', error);
             return { common: [], extra: [] };
         }
 
@@ -51,14 +51,14 @@ export async function getSurveyFieldsByCategory(categoryKey) {
         const commonFields = data.filter(f => f.is_common || f.category_key === null);
         const extraFields = data.filter(f => !f.is_common && f.category_key === categoryKey);
 
-        console.log(`✅ Получено ${commonFields.length} общих и ${extraFields.length} специфичных полей`);
+        console.log(` Получено ${commonFields.length} общих и ${extraFields.length} специфичных полей`);
 
         return {
             common: commonFields,
             extra: extraFields
         };
     } catch (error) {
-        console.error('❌ Ошибка получения полей:', error);
+        console.error(' Ошибка получения полей:', error);
         return { common: [], extra: [] };
     }
 }
@@ -79,7 +79,7 @@ export async function getAllSurveyData() {
             .order('display_order', { ascending: true });
 
         if (error) {
-            console.error('❌ Ошибка получения полей:', error);
+            console.error(' Ошибка получения полей:', error);
             return null;
         }
 
@@ -122,11 +122,11 @@ export async function getAllSurveyData() {
             }
         });
 
-        console.log('✅ Сформирована структура вопросов');
+        console.log(' Сформирована структура вопросов');
         return result;
 
     } catch (error) {
-        console.error('❌ Ошибка получения всех данных опроса:', error);
+        console.error(' Ошибка получения всех данных опроса:', error);
         return null;
     }
 }
@@ -152,13 +152,13 @@ export async function upsertCategory(categoryData) {
             .single();
 
         if (error) {
-            console.error('❌ Ошибка сохранения категории:', error);
+            console.error(' Ошибка сохранения категории:', error);
             return null;
         }
 
         return data;
     } catch (error) {
-        console.error('❌ Ошибка сохранения категории:', error);
+        console.error(' Ошибка сохранения категории:', error);
         return null;
     }
 }
@@ -188,13 +188,13 @@ export async function upsertField(fieldData) {
             .single();
 
         if (error) {
-            console.error('❌ Ошибка сохранения поля:', error);
+            console.error(' Ошибка сохранения поля:', error);
             return null;
         }
 
         return data;
     } catch (error) {
-        console.error('❌ Ошибка сохранения поля:', error);
+        console.error(' Ошибка сохранения поля:', error);
         return null;
     }
 }

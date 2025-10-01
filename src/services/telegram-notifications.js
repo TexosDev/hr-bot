@@ -13,27 +13,27 @@ class TelegramNotificationService {
     }
 
     if (!process.env.BOT_TOKEN) {
-      console.warn('⚠️ BOT_TOKEN не найден, уведомления отключены');
+      console.warn(' BOT_TOKEN не найден, уведомления отключены');
       return;
     }
 
     if (!this.adminId) {
-      console.warn('⚠️ ADMIN_CHAT_ID не найден, уведомления отключены');
+      console.warn(' ADMIN_CHAT_ID не найден, уведомления отключены');
       return;
     }
 
     try {
       this.bot = new Telegraf(process.env.BOT_TOKEN);
       this.isInitialized = true;
-      console.log('✅ Сервис уведомлений инициализирован');
+      console.log(' Сервис уведомлений инициализирован');
     } catch (error) {
-      console.error('❌ Ошибка инициализации уведомлений:', error);
+      console.error(' Ошибка инициализации уведомлений:', error);
     }
   }
 
   async notifyAdmin(message, options = {}) {
     if (!this.isInitialized || !this.bot) {
-      console.log('📱 Уведомления отключены:', message);
+      console.log(' Уведомления отключены:', message);
       return;
     }
 
@@ -42,9 +42,9 @@ class TelegramNotificationService {
         parse_mode: 'Markdown',
         ...options
       });
-      console.log('📤 Уведомление отправлено админу');
+      console.log(' Уведомление отправлено админу');
     } catch (error) {
-      console.error('❌ Ошибка отправки уведомления:', error);
+      console.error(' Ошибка отправки уведомления:', error);
     }
   }
 
@@ -55,7 +55,7 @@ class TelegramNotificationService {
   async notifySyncResult(result, type = 'синхронизация') {
     if (!result.success) {
       await this.notifyAdmin(
-        `❌ *Ошибка ${type}*\n\n` +
+        ` *Ошибка ${type}*\n\n` +
         `Ошибка: ${result.error}\n` +
         `Время: ${new Date().toLocaleString('ru-RU')}`,
         { parse_mode: 'Markdown' }
@@ -69,8 +69,8 @@ class TelegramNotificationService {
     // Отправляем уведомление только если есть изменения
     if (this.hasChanges(result)) {
       await this.notifyAdmin(
-        `🔄 *${type} завершена*\n\n` +
-        `📊 *Результаты:*\n` +
+        ` *${type} завершена*\n\n` +
+        ` *Результаты:*\n` +
         `• Вакансии: ${vacancies.synced || 0} новых, ${vacancies.updated || 0} обновленных\n` +
         `• Подписки: ${subscriptions.synced || 0} синхронизированных\n\n` +
         `⏰ ${new Date().toLocaleString('ru-RU')}`,
@@ -85,7 +85,7 @@ class TelegramNotificationService {
    */
   async notifyCriticalError(error, context = '') {
     await this.notifyAdmin(
-      `🚨 *КРИТИЧЕСКАЯ ОШИБКА*\n\n` +
+      `� *КРИТИЧЕСКАЯ ОШИБКА*\n\n` +
       `Контекст: ${context}\n` +
       `Ошибка: ${error.message}\n` +
       `Время: ${new Date().toLocaleString('ru-RU')}\n\n` +
@@ -100,7 +100,7 @@ class TelegramNotificationService {
    */
   async notifyBotStart() {
     await this.notifyAdmin(
-      `🚀 *Бот запущен*\n\n` +
+      ` *Бот запущен*\n\n` +
       `Время: ${new Date().toLocaleString('ru-RU')}\n` +
       `Статус: Все системы работают`,
       { parse_mode: 'Markdown' }

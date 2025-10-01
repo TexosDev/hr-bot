@@ -15,7 +15,7 @@ const VACANCIES_SHEET_ID = process.env.GOOGLE_VACANCIES_SHEET_ID || process.env.
 // Синхронизация вакансий из Google Sheets в Supabase
 export async function syncVacanciesFromSheetsToSupabase() {
   try {
-    console.log('🔄 Синхронизация вакансий из Google Sheets в Supabase...');
+    console.log(' Синхронизация вакансий из Google Sheets в Supabase...');
     
     // Получаем данные из Google Sheets
     const response = await sheetsService.spreadsheets.values.get({
@@ -24,10 +24,10 @@ export async function syncVacanciesFromSheetsToSupabase() {
     });
     
     const rows = response.data.values || [];
-    console.log(`📋 Получено ${rows.length} строк из Google Sheets`);
+    console.log(` Получено ${rows.length} строк из Google Sheets`);
     
     if (rows.length <= 1) {
-      console.log('⚠️ Нет данных для синхронизации');
+      console.log(' Нет данных для синхронизации');
       return { success: true, synced: 0 };
     }
     
@@ -35,7 +35,7 @@ export async function syncVacanciesFromSheetsToSupabase() {
     const vacancies = rows.slice(1).map((row, index) => ({
       title: row[0] || '',
       description: row[1] || '',
-      emoji: row[2] || '💼',
+      emoji: row[2] || '�',
       category: row[3] || 'Общее',
       link: row[4] || '',
       level: row[5] || '',
@@ -45,7 +45,7 @@ export async function syncVacanciesFromSheetsToSupabase() {
       is_active: true
     })).filter(v => v.title); // Фильтруем пустые строки
     
-    console.log(`📋 Найдено ${vacancies.length} вакансий для синхронизации`);
+    console.log(` Найдено ${vacancies.length} вакансий для синхронизации`);
     
     if (vacancies.length === 0) {
       return { success: true, synced: 0 };
@@ -57,7 +57,7 @@ export async function syncVacanciesFromSheetsToSupabase() {
       .select('title, category');
     
     if (fetchError) {
-      console.error('❌ Ошибка получения существующих вакансий:', fetchError);
+      console.error(' Ошибка получения существующих вакансий:', fetchError);
       return { success: false, error: fetchError };
     }
     
@@ -83,10 +83,10 @@ export async function syncVacanciesFromSheetsToSupabase() {
           .eq('category', vacancy.category);
         
         if (updateError) {
-          console.error(`❌ Ошибка обновления вакансии ${vacancy.title}:`, updateError);
+          console.error(` Ошибка обновления вакансии ${vacancy.title}:`, updateError);
         } else {
           updatedCount++;
-          console.log(`✅ Обновлена вакансия: ${vacancy.title}`);
+          console.log(` Обновлена вакансия: ${vacancy.title}`);
         }
       } else {
         // Добавляем новую вакансию
@@ -95,19 +95,19 @@ export async function syncVacanciesFromSheetsToSupabase() {
           .insert([vacancy]);
         
         if (insertError) {
-          console.error(`❌ Ошибка добавления вакансии ${vacancy.title}:`, insertError);
+          console.error(` Ошибка добавления вакансии ${vacancy.title}:`, insertError);
         } else {
           syncedCount++;
-          console.log(`✅ Добавлена новая вакансия: ${vacancy.title}`);
+          console.log(` Добавлена новая вакансия: ${vacancy.title}`);
         }
       }
     }
     
-    console.log(`🎉 Синхронизация завершена: ${syncedCount} новых, ${updatedCount} обновленных`);
+    console.log(` Синхронизация завершена: ${syncedCount} новых, ${updatedCount} обновленных`);
     return { success: true, synced: syncedCount, updated: updatedCount };
     
   } catch (error) {
-    console.error('❌ Ошибка синхронизации вакансий:', error);
+    console.error(' Ошибка синхронизации вакансий:', error);
     return { success: false, error: error.message };
   }
 }
@@ -115,7 +115,7 @@ export async function syncVacanciesFromSheetsToSupabase() {
 // Синхронизация подписок из Supabase в Google Sheets
 export async function syncSubscriptionsFromSupabaseToSheets() {
   try {
-    console.log('🔄 Синхронизация подписок из Supabase в Google Sheets...');
+    console.log(' Синхронизация подписок из Supabase в Google Sheets...');
     
     // Получаем подписки из Supabase
     const { data: subscriptions, error } = await supabase
@@ -124,11 +124,11 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('❌ Ошибка получения подписок:', error);
+      console.error(' Ошибка получения подписок:', error);
       return { success: false, error: error.message };
     }
     
-    console.log(`📋 Получено ${subscriptions.length} подписок из Supabase`);
+    console.log(` Получено ${subscriptions.length} подписок из Supabase`);
     
     if (subscriptions.length === 0) {
       return { success: true, synced: 0 };
@@ -170,11 +170,11 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
       });
     }
     
-    console.log(`✅ Синхронизировано ${rows.length} подписок в Google Sheets`);
+    console.log(` Синхронизировано ${rows.length} подписок в Google Sheets`);
     return { success: true, synced: rows.length };
     
   } catch (error) {
-    console.error('❌ Ошибка синхронизации подписок:', error);
+    console.error(' Ошибка синхронизации подписок:', error);
     return { success: false, error: error.message };
   }
 }
@@ -182,7 +182,7 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
 // Полная синхронизация
 export async function fullSync() {
   try {
-    console.log('🚀 Запуск полной синхронизации...');
+    console.log(' Запуск полной синхронизации...');
     
     // 1. Синхронизируем вакансии из Google Sheets в Supabase
     const vacanciesResult = await syncVacanciesFromSheetsToSupabase();
@@ -190,8 +190,8 @@ export async function fullSync() {
     // 2. Синхронизируем подписки из Supabase в Google Sheets
     const subscriptionsResult = await syncSubscriptionsFromSupabaseToSheets();
     
-    console.log('🎉 Полная синхронизация завершена!');
-    console.log(`📊 Результаты:`);
+    console.log(' Полная синхронизация завершена!');
+    console.log(` Результаты:`);
     console.log(`  - Вакансии: ${vacanciesResult.synced} новых, ${vacanciesResult.updated} обновленных`);
     console.log(`  - Подписки: ${subscriptionsResult.synced} синхронизированных`);
     
@@ -202,7 +202,7 @@ export async function fullSync() {
     };
     
   } catch (error) {
-    console.error('❌ Ошибка полной синхронизации:', error);
+    console.error(' Ошибка полной синхронизации:', error);
     return { success: false, error: error.message };
   }
 }

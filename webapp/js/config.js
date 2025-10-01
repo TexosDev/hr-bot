@@ -27,10 +27,10 @@ export async function loadCategoriesFromAPI() {
             return result.categories;
         }
 
-        console.error('❌ Ошибка загрузки категорий:', result.error);
+        console.error(' Ошибка загрузки категорий:', result.error);
         return null;
     } catch (error) {
-        console.error('❌ Ошибка загрузки категорий из API:', error);
+        console.error(' Ошибка загрузки категорий из API:', error);
         return null;
     }
 }
@@ -47,10 +47,10 @@ export async function loadFieldsForCategory(categoryKey) {
             return result.fields;
         }
 
-        console.error('❌ Ошибка загрузки полей:', result.error);
+        console.error(' Ошибка загрузки полей:', result.error);
         return null;
     } catch (error) {
-        console.error('❌ Ошибка загрузки полей из API:', error);
+        console.error(' Ошибка загрузки полей из API:', error);
         return null;
     }
 }

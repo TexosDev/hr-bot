@@ -19,7 +19,7 @@ export async function getSurveyQuestions() {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('❌ Ошибка получения вопросов опроса:', error);
+    console.error(' Ошибка получения вопросов опроса:', error);
     return [];
   }
 }
@@ -43,7 +43,7 @@ export async function getTags(category = null) {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('❌ Ошибка получения тегов:', error);
+    console.error(' Ошибка получения тегов:', error);
     return [];
   }
 }
@@ -70,7 +70,7 @@ export async function saveSurveyResponse(userId, questionId, answer) {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('❌ Ошибка сохранения ответа:', error);
+    console.error(' Ошибка сохранения ответа:', error);
     return null;
   }
 }
@@ -96,7 +96,7 @@ export async function getUserSurveyResponses(userId) {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('❌ Ошибка получения ответов пользователя:', error);
+    console.error(' Ошибка получения ответов пользователя:', error);
     return [];
   }
 }
@@ -126,7 +126,7 @@ export async function createSurveyBasedSubscription(userId, userInfo, preference
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('❌ Ошибка создания подписки:', error);
+    console.error(' Ошибка создания подписки:', error);
     return null;
   }
 }
@@ -146,7 +146,7 @@ export async function getUserSubscription(userId) {
     if (error && error.code !== 'PGRST116') throw error;
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения подписки:', error);
+    console.error(' Ошибка получения подписки:', error);
     return null;
   }
 }
@@ -177,7 +177,7 @@ export async function linkUserToTags(userId, tagIds) {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('❌ Ошибка связывания пользователя с тегами:', error);
+    console.error(' Ошибка связывания пользователя с тегами:', error);
     return null;
   }
 }
@@ -202,7 +202,7 @@ export async function getUserTags(userId) {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('❌ Ошибка получения тегов пользователя:', error);
+    console.error(' Ошибка получения тегов пользователя:', error);
     return [];
   }
 }
@@ -233,7 +233,7 @@ export async function linkVacancyToTags(vacancyId, tagIds) {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('❌ Ошибка связывания вакансии с тегами:', error);
+    console.error(' Ошибка связывания вакансии с тегами:', error);
     return null;
   }
 }
@@ -258,7 +258,7 @@ export async function getVacancyTags(vacancyId) {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('❌ Ошибка получения тегов вакансии:', error);
+    console.error(' Ошибка получения тегов вакансии:', error);
     return [];
   }
 }
@@ -306,7 +306,7 @@ export async function findMatchingVacancies(userId) {
     
     return Object.values(vacancyMatches).sort((a, b) => b.score - a.score);
   } catch (error) {
-    console.error('❌ Ошибка поиска подходящих вакансий:', error);
+    console.error(' Ошибка поиска подходящих вакансий:', error);
     return [];
   }
 }

@@ -3,27 +3,27 @@ import 'dotenv/config';
 // Проверяем режим запуска через переменную окружения
 const SERVICE_MODE = process.env.SERVICE_MODE || 'bot';
 
-console.log(`🚀 Режим запуска: ${SERVICE_MODE.toUpperCase()}`);
+console.log(` Режим запуска: ${SERVICE_MODE.toUpperCase()}`);
 
 // WEBAPP MODE - только веб-сервер для формы подписки
 if (SERVICE_MODE === 'webapp') {
-  console.log('🌐 Запуск WebApp сервера...');
+  console.log(' Запуск WebApp сервера...');
   
   const { webhookService } = await import('./services/webhook.js');
   
   await webhookService.start();
-  console.log('✅ WebApp сервер запущен и готов к работе!');
-  console.log(`📱 WebApp доступен по Public URL Railway`);
-  console.log(`❤️  Health check: /health`);
+  console.log(' WebApp сервер запущен и готов к работе!');
+  console.log(` WebApp доступен по Public URL Railway`);
+  console.log(`❤  Health check: /health`);
   
   process.on('SIGINT', () => {
-    console.log('\n⏹️ Остановка WebApp сервера...');
+    console.log('\n⏹ Остановка WebApp сервера...');
     webhookService.stop();
     process.exit(0);
   });
   
   process.on('SIGTERM', () => {
-    console.log('\n⏹️ Остановка WebApp сервера...');
+    console.log('\n⏹ Остановка WebApp сервера...');
     webhookService.stop();
     process.exit(0);
   });
@@ -44,16 +44,16 @@ if (SERVICE_MODE === 'webapp') {
   const { syncScheduler } = await import('./services/scheduler.js');
   const { telegramNotifications } = await import('./services/telegram-notifications.js');
 
-  console.log('🔍 Проверка конфигурации...');
+  console.log(' Проверка конфигурации...');
   if (!process.env.BOT_TOKEN) {
-    console.error('❌ BOT_TOKEN не найден!');
+    console.error(' BOT_TOKEN не найден!');
     process.exit(1);
   }
   if (!process.env.ADMIN_CHAT_ID) {
-    console.error('❌ ADMIN_CHAT_ID не найден!');
+    console.error(' ADMIN_CHAT_ID не найден!');
     process.exit(1);
   }
-  console.log('✅ Основные переменные настроены');
+  console.log(' Основные переменные настроены');
   
   const bot = new Telegraf(process.env.BOT_TOKEN);
   
@@ -87,53 +87,53 @@ if (SERVICE_MODE === 'webapp') {
   bot.on('document', (ctx) => handleDocument(ctx, driveService, sheetsService, sheetId, folderId));
   bot.on('text', handleText);
   bot.catch((err, ctx) => {
-    console.error('❌ Ошибка бота:', err);
-    ctx.reply('❌ Произошла ошибка. Попробуйте позже.');
+    console.error(' Ошибка бота:', err);
+    ctx.reply(' Произошла ошибка. Попробуйте позже.');
   });
   
   // Функция запуска бота
   async function startBot() {
-    console.log('🔧 Инициализация сервисов...');
+    console.log(' Инициализация сервисов...');
     telegramNotifications.initialize();
     syncScheduler.start();
 
-    console.log('📱 Запуск Telegram бота (polling режим)...');
+    console.log(' Запуск Telegram бота (polling режим)...');
     
     // Обрабатываем ошибку 409 (временные конфликты при деплое Railway)
     try {
       await bot.launch();
-      console.log('✅ Telegram бот запущен');
+      console.log(' Telegram бот запущен');
     } catch (error) {
       if (error.response?.error_code === 409) {
-        console.warn('⚠️ Ошибка 409: другой экземпляр бота уже запущен');
-        console.warn('💡 Это нормально при перезапусках Railway, ждём 5 секунд...');
+        console.warn(' Ошибка 409: другой экземпляр бота уже запущен');
+        console.warn(' Это нормально при перезапусках Railway, ждём 5 секунд...');
         // Ждём 5 секунд и пробуем снова
         await new Promise(resolve => setTimeout(resolve, 5000));
         await bot.launch();
-        console.log('✅ Telegram бот запущен (вторая попытка)');
+        console.log(' Telegram бот запущен (вторая попытка)');
       } else {
         throw error;
       }
     }
 
-    console.log('🚀 Бот запущен и готов к работе!');
+    console.log(' Бот запущен и готов к работе!');
     telegramNotifications.notifyBotStart();
   }
 
   // Запуск
   startBot().catch(err => {
-    console.error('❌ Критическая ошибка запуска:', err);
+    console.error(' Критическая ошибка запуска:', err);
     process.exit(1);
   });
   
   process.once('SIGINT', () => {
-    console.log('⏹️ Остановка бота...');
+    console.log('⏹ Остановка бота...');
     syncScheduler.stop();
     bot.stop('SIGINT');
   });
 
   process.once('SIGTERM', () => {
-    console.log('⏹️ Остановка бота...');
+    console.log('⏹ Остановка бота...');
     syncScheduler.stop();
     bot.stop('SIGTERM');
   });

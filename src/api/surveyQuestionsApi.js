@@ -27,7 +27,7 @@ router.get('/categories', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Ошибка получения категорий:', error);
+        console.error(' Ошибка получения категорий:', error);
         res.status(500).json({
             success: false,
             error: 'Ошибка получения категорий'
@@ -77,7 +77,7 @@ router.get('/categories/:categoryKey/fields', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Ошибка получения полей:', error);
+        console.error(' Ошибка получения полей:', error);
         res.status(500).json({
             success: false,
             error: 'Ошибка получения полей'
@@ -106,7 +106,7 @@ router.get('/all', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Ошибка получения всех данных:', error);
+        console.error(' Ошибка получения всех данных:', error);
         res.status(500).json({
             success: false,
             error: 'Ошибка получения данных'

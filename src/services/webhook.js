@@ -21,11 +21,11 @@ class WebhookService {
   }
 
   setupMiddleware() {
-    // ✅ БЕЗОПАСНОСТЬ: Ограничение размера body
+    //  БЕЗОПАСНОСТЬ: Ограничение размера body
     this.app.use(express.json({ limit: '50kb' }));
     this.app.use(express.urlencoded({ extended: true, limit: '50kb' }));
     
-    // ✅ БЕЗОПАСНОСТЬ: CORS только для наших доменов
+    //  БЕЗОПАСНОСТЬ: CORS только для наших доменов
     this.app.use((req, res, next) => {
       const allowedOrigins = [
         process.env.WEBAPP_URL,
@@ -51,11 +51,11 @@ class WebhookService {
     
     // Логирование (без чувствительных данных)
     this.app.use((req, res, next) => {
-      console.log(`📨 ${req.method} ${req.path} - ${new Date().toISOString()}`);
+      console.log(` ${req.method} ${req.path} - ${new Date().toISOString()}`);
       next();
     });
     
-    // ✅ БЕЗОПАСНОСТЬ: Защита от timing attacks
+    //  БЕЗОПАСНОСТЬ: Защита от timing attacks
     this.app.use((req, res, next) => {
       const start = Date.now();
       res.on('finish', () => {
@@ -71,8 +71,8 @@ class WebhookService {
 
   setupRoutes() {
     this.app.use('/webapp', express.static(path.join(__dirname, '../../webapp')));
-    this.app.use('/api/survey', surveyApi); // ✅ Основное API для WebApp
-    this.app.use('/api/questions', surveyQuestionsApi); // ✅ API вопросов из Supabase
+    this.app.use('/api/survey', surveyApi); //  Основное API для WebApp
+    this.app.use('/api/questions', surveyQuestionsApi); //  API вопросов из Supabase
     this.app.post('/webhook/sheets-updated', this.handleSheetsUpdate.bind(this));
     
     this.app.post('/webhook/manual-sync', this.handleManualSync.bind(this));
@@ -90,23 +90,23 @@ class WebhookService {
 
   async handleSheetsUpdate(req, res) {
     try {
-      console.log('📨 Получен webhook от Google Sheets');
+      console.log(' Получен webhook от Google Sheets');
       const authToken = req.headers['authorization'];
       
-      // ✅ БЕЗОПАСНОСТЬ: Обязательная проверка webhook secret
+      //  БЕЗОПАСНОСТЬ: Обязательная проверка webhook secret
       if (!process.env.WEBHOOK_SECRET) {
-        console.error('❌ WEBHOOK_SECRET не настроен - webhook отключен');
+        console.error(' WEBHOOK_SECRET не настроен - webhook отключен');
         return res.status(503).json({ error: 'Webhook temporarily unavailable' });
       }
       
       if (authToken !== `Bearer ${process.env.WEBHOOK_SECRET}`) {
-        console.warn('⚠️ Неверный WEBHOOK_SECRET');
+        console.warn(' Неверный WEBHOOK_SECRET');
         return res.status(401).json({ error: 'Unauthorized' });
       }
       const result = await fullSync();
       
       if (result.success) {
-        console.log('✅ Webhook синхронизация завершена');
+        console.log(' Webhook синхронизация завершена');
         
         // Уведомляем админа только если есть изменения
         if (this.hasChanges(result)) {
@@ -122,10 +122,10 @@ class WebhookService {
           }
         });
       } else {
-        console.error('❌ Ошибка webhook синхронизации:', result.error);
+        console.error(' Ошибка webhook синхронизации:', result.error);
         
         await telegramNotifications.notifyAdmin(
-          `❌ *Ошибка webhook синхронизации*\n\n` +
+          ` *Ошибка webhook синхронизации*\n\n` +
           `Ошибка: ${result.error}\n` +
           `Время: ${new Date().toLocaleString('ru-RU')}`,
           { parse_mode: 'Markdown' }
@@ -137,7 +137,7 @@ class WebhookService {
         });
       }
     } catch (error) {
-      console.error('❌ Критическая ошибка webhook:', error);
+      console.error(' Критическая ошибка webhook:', error);
       
       await telegramNotifications.notifyCriticalError(error, 'webhook синхронизация');
       
@@ -154,7 +154,7 @@ class WebhookService {
    */
   async handleManualSync(req, res) {
     try {
-      console.log('🔧 Ручная синхронизация через webhook');
+      console.log(' Ручная синхронизация через webhook');
       
       const result = await fullSync();
       
@@ -176,7 +176,7 @@ class WebhookService {
         });
       }
     } catch (error) {
-      console.error('❌ Ошибка ручной синхронизации:', error);
+      console.error(' Ошибка ручной синхронизации:', error);
       res.status(500).json({
         success: false,
         error: error.message
@@ -190,12 +190,12 @@ class WebhookService {
    */
   async handleQuestionsSync(req, res) {
     try {
-      console.log('📨 Получен webhook синхронизации вопросов от Google Sheets');
+      console.log(' Получен webhook синхронизации вопросов от Google Sheets');
       
       // Проверка токена безопасности (опционально)
       const authToken = req.headers['authorization'];
       if (process.env.WEBHOOK_SECRET && authToken !== `Bearer ${process.env.WEBHOOK_SECRET}`) {
-        console.warn('⚠️ Неверный токен авторизации');
+        console.warn(' Неверный токен авторизации');
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
@@ -207,7 +207,7 @@ class WebhookService {
       const result = await syncSurveyQuestions();
       
       if (result.success) {
-        console.log('✅ Автоматическая синхронизация вопросов выполнена');
+        console.log(' Автоматическая синхронизация вопросов выполнена');
         console.log(`   Категорий: ${result.categories?.synced || 0}`);
         console.log(`   Полей: ${result.fields?.synced || 0}`);
         
@@ -220,7 +220,7 @@ class WebhookService {
           }
         });
       } else {
-        console.error('❌ Ошибка синхронизации вопросов:', result.error);
+        console.error(' Ошибка синхронизации вопросов:', result.error);
         
         res.status(500).json({
           success: false,
@@ -229,7 +229,7 @@ class WebhookService {
       }
       
     } catch (error) {
-      console.error('❌ Критическая ошибка синхронизации вопросов:', error);
+      console.error(' Критическая ошибка синхронизации вопросов:', error);
       
       res.status(500).json({
         success: false,
@@ -293,7 +293,7 @@ class WebhookService {
    */
   start() {
     if (this.isRunning) {
-      console.log('⚠️ Webhook сервер уже запущен');
+      console.log(' Webhook сервер уже запущен');
       return Promise.resolve();
     }
 
@@ -301,8 +301,8 @@ class WebhookService {
       try {
         this.server = this.app.listen(this.port, () => {
           this.isRunning = true;
-          console.log(`🚀 Webhook сервер запущен на порту ${this.port}`);
-          console.log(`📡 Доступные endpoints:`);
+          console.log(` Webhook сервер запущен на порту ${this.port}`);
+          console.log(` Доступные endpoints:`);
           console.log(`   • POST http://localhost:${this.port}/webhook/sheets-updated`);
           console.log(`   • POST http://localhost:${this.port}/webhook/manual-sync`);
           console.log(`   • POST http://localhost:${this.port}/webhook/sync-questions`);
@@ -314,8 +314,8 @@ class WebhookService {
 
         this.server.on('error', (error) => {
           if (error.code === 'EADDRINUSE') {
-            console.error(`❌ Порт ${this.port} уже используется`);
-            console.error(`💡 Остановите другой процесс или измените WEBHOOK_PORT в .env`);
+            console.error(` Порт ${this.port} уже используется`);
+            console.error(` Остановите другой процесс или измените WEBHOOK_PORT в .env`);
           }
           reject(error);
         });
@@ -331,7 +331,7 @@ class WebhookService {
    */
   stop() {
     if (!this.isRunning) {
-      console.log('⚠️ Webhook сервер не запущен');
+      console.log(' Webhook сервер не запущен');
       return Promise.resolve();
     }
 
@@ -339,12 +339,12 @@ class WebhookService {
       if (this.server) {
         this.server.close(() => {
           this.isRunning = false;
-          console.log('⏹️ Webhook сервер остановлен');
+          console.log('⏹ Webhook сервер остановлен');
           resolve();
         });
       } else {
         this.isRunning = false;
-        console.log('⏹️ Webhook сервер остановлен');
+        console.log('⏹ Webhook сервер остановлен');
         resolve();
       }
     });

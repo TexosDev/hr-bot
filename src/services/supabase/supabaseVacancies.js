@@ -3,7 +3,7 @@ import { supabase } from './supabase.js';
 // Получение всех вакансий из Supabase
 export async function getVacanciesFromSupabase() {
   try {
-    console.log('📋 Получение вакансий из Supabase...');
+    console.log(' Получение вакансий из Supabase...');
     
     const { data, error } = await supabase
       .from('vacancies')
@@ -12,14 +12,14 @@ export async function getVacanciesFromSupabase() {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('❌ Ошибка получения вакансий:', error);
+      console.error(' Ошибка получения вакансий:', error);
       return [];
     }
     
-    console.log(`📋 Получено ${data.length} вакансий из Supabase`);
+    console.log(` Получено ${data.length} вакансий из Supabase`);
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения вакансий:', error);
+    console.error(' Ошибка получения вакансий:', error);
     return [];
   }
 }
@@ -35,13 +35,13 @@ export async function getVacancyByIdFromSupabase(vacancyId) {
       .single();
     
     if (error) {
-      console.error('❌ Ошибка получения вакансии:', error);
+      console.error(' Ошибка получения вакансии:', error);
       return null;
     }
     
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения вакансии:', error);
+    console.error(' Ошибка получения вакансии:', error);
     return null;
   }
 }
@@ -52,7 +52,7 @@ export const getVacancyById = getVacancyByIdFromSupabase;
 // Добавление новой вакансии в Supabase
 export async function addVacancyToSupabase(vacancyData) {
   try {
-    console.log('📝 Добавление вакансии в Supabase...');
+    console.log(' Добавление вакансии в Supabase...');
     
     const { data, error } = await supabase
       .from('vacancies')
@@ -61,14 +61,14 @@ export async function addVacancyToSupabase(vacancyData) {
       .single();
     
     if (error) {
-      console.error('❌ Ошибка добавления вакансии:', error);
+      console.error(' Ошибка добавления вакансии:', error);
       return null;
     }
     
-    console.log('✅ Вакансия добавлена в Supabase');
+    console.log(' Вакансия добавлена в Supabase');
     return data;
   } catch (error) {
-    console.error('❌ Ошибка добавления вакансии:', error);
+    console.error(' Ошибка добавления вакансии:', error);
     return null;
   }
 }
@@ -76,7 +76,7 @@ export async function addVacancyToSupabase(vacancyData) {
 // Обновление вакансии в Supabase
 export async function updateVacancyInSupabase(vacancyId, updateData) {
   try {
-    console.log('📝 Обновление вакансии в Supabase...');
+    console.log(' Обновление вакансии в Supabase...');
     
     const { data, error } = await supabase
       .from('vacancies')
@@ -86,14 +86,14 @@ export async function updateVacancyInSupabase(vacancyId, updateData) {
       .single();
     
     if (error) {
-      console.error('❌ Ошибка обновления вакансии:', error);
+      console.error(' Ошибка обновления вакансии:', error);
       return null;
     }
     
-    console.log('✅ Вакансия обновлена в Supabase');
+    console.log(' Вакансия обновлена в Supabase');
     return data;
   } catch (error) {
-    console.error('❌ Ошибка обновления вакансии:', error);
+    console.error(' Ошибка обновления вакансии:', error);
     return null;
   }
 }
@@ -101,7 +101,7 @@ export async function updateVacancyInSupabase(vacancyId, updateData) {
 // Удаление вакансии из Supabase (мягкое удаление)
 export async function deleteVacancyFromSupabase(vacancyId) {
   try {
-    console.log('🗑️ Удаление вакансии из Supabase...');
+    console.log('� Удаление вакансии из Supabase...');
     
     const { error } = await supabase
       .from('vacancies')
@@ -109,14 +109,14 @@ export async function deleteVacancyFromSupabase(vacancyId) {
       .eq('id', vacancyId);
     
     if (error) {
-      console.error('❌ Ошибка удаления вакансии:', error);
+      console.error(' Ошибка удаления вакансии:', error);
       return false;
     }
     
-    console.log('✅ Вакансия удалена из Supabase');
+    console.log(' Вакансия удалена из Supabase');
     return true;
   } catch (error) {
-    console.error('❌ Ошибка удаления вакансии:', error);
+    console.error(' Ошибка удаления вакансии:', error);
     return false;
   }
 }
@@ -132,13 +132,13 @@ export async function getVacanciesByCategoryFromSupabase(category) {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('❌ Ошибка получения вакансий по категории:', error);
+      console.error(' Ошибка получения вакансий по категории:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения вакансий по категории:', error);
+    console.error(' Ошибка получения вакансий по категории:', error);
     return [];
   }
 }

@@ -43,11 +43,11 @@ class AppState {
             const saved = localStorage.getItem('formProgress');
             if (saved) {
                 const parsed = JSON.parse(saved);
-                console.log('✅ Восстановлено состояние из localStorage');
+                console.log(' Восстановлено состояние из localStorage');
                 return parsed;
             }
         } catch (error) {
-            console.warn('⚠️ Ошибка восстановления состояния:', error);
+            console.warn(' Ошибка восстановления состояния:', error);
         }
         return null;
     }
@@ -65,7 +65,7 @@ class AppState {
             };
             localStorage.setItem('formProgress', JSON.stringify(toSave));
         } catch (error) {
-            console.warn('⚠️ Ошибка сохранения состояния:', error);
+            console.warn(' Ошибка сохранения состояния:', error);
         }
     }
 
@@ -262,7 +262,7 @@ class AppState {
             const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
             if (tgUser && tgUser.id) {
                 formData.telegramUserId = tgUser.id;
-                console.log('✅ Telegram User ID получен:', tgUser.id);
+                console.log(' Telegram User ID получен:', tgUser.id);
             }
         }
 

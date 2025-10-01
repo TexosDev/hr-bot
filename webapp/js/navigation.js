@@ -120,7 +120,7 @@ export function syncFormDataWithInputs() {
  * Отправить форму
  */
 export async function submitForm() {
-    console.log('🚀 Начинаем отправку формы...');
+    console.log(' Начинаем отправку формы...');
 
     // Импортируем showSuccess
     const { showSuccess, showError: showErrorUI } = await import('./ui.js');
@@ -129,14 +129,14 @@ export async function submitForm() {
 
     // Проверяем финальную валидацию
     if (!validateForm()) {
-        console.log('❌ Валидация не пройдена, отправка отменена');
+        console.log(' Валидация не пройдена, отправка отменена');
         return;
     }
 
     // Проверяем наличие интернета
     if (!navigator.onLine) {
-        showErrorUI('⚠️ Нет подключения к интернету. Проверьте соединение и попробуйте снова.');
-        console.warn('⚠️ Попытка отправки без интернета');
+        showErrorUI(' Нет подключения к интернету. Проверьте соединение и попробуйте снова.');
+        console.warn(' Попытка отправки без интернета');
         return;
     }
 
@@ -156,20 +156,20 @@ export async function submitForm() {
         }
 
         // Логируем данные для отладки
-        console.log('📋 Данные формы для отправки:', formData);
-        console.log('🔍 Проверка валидации пройдена успешно');
+        console.log(' Данные формы для отправки:', formData);
+        console.log(' Проверка валидации пройдена успешно');
 
         // Определяем URL для отправки
         const baseUrl = window.location.origin;
         const apiUrl = `${baseUrl}/api/survey/complete`;
 
-        console.log('🚀 Отправляем данные на:', apiUrl);
+        console.log(' Отправляем данные на:', apiUrl);
 
         // Отправляем данные на сервер с timeout
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд timeout
 
-        // ✅ БЕЗОПАСНОСТЬ: Добавляем Telegram initData для валидации на сервере
+        //  БЕЗОПАСНОСТЬ: Добавляем Telegram initData для валидации на сервере
         const headers = {
             'Content-Type': 'application/json',
         };
@@ -177,7 +177,7 @@ export async function submitForm() {
         // Получаем initData из Telegram WebApp API если доступно
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
             headers['x-telegram-init-data'] = window.Telegram.WebApp.initData;
-            console.log('🔐 Добавлен Telegram auth header для валидации');
+            console.log('� Добавлен Telegram auth header для валидации');
         }
 
         const response = await fetch(apiUrl, {
@@ -204,7 +204,7 @@ export async function submitForm() {
         }
 
         const result = await response.json();
-        console.log('✅ Ответ сервера:', result);
+        console.log(' Ответ сервера:', result);
 
         // Сохраняем копию в localStorage на случай проблем
         localStorage.setItem('lastSubmission', JSON.stringify({
@@ -217,7 +217,7 @@ export async function submitForm() {
         appState.reset();
 
         // Показываем сообщение об успехе
-        showSuccess('✅ Форма успешно отправлена! Спасибо за участие.');
+        showSuccess(' Форма успешно отправлена! Спасибо за участие.');
 
         // Перенаправляем в бота через 2 секунды
         setTimeout(() => {
@@ -225,7 +225,7 @@ export async function submitForm() {
         }, 2000);
 
     } catch (error) {
-        console.error('❌ Ошибка отправки формы:', error);
+        console.error(' Ошибка отправки формы:', error);
         
         // Сохраняем данные формы для повторной попытки
         const formData = appState.getFormDataForSubmit();
@@ -237,13 +237,13 @@ export async function submitForm() {
 
         // Показываем понятную ошибку пользователю
         if (error.name === 'AbortError') {
-            showErrorUI('⏱️ Превышено время ожидания. Проверьте соединение и попробуйте снова.');
+            showErrorUI('⏱ Превышено время ожидания. Проверьте соединение и попробуйте снова.');
         } else {
             showErrorUI(error.message || 'Произошла ошибка при отправке формы. Попробуйте позже.');
         }
     } finally {
         // Скрываем состояние загрузки
-        console.log('🔄 Скрываем индикатор загрузки');
+        console.log(' Скрываем индикатор загрузки');
         showLoading(false);
         appState.setLoading(false);
     }

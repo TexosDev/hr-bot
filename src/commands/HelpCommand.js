@@ -14,13 +14,13 @@ export class HelpCommand extends BaseCommand {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '🚀 Начать', callback_data: 'back_to_main' }],
-            [{ text: '📋 Вакансии', callback_data: 'show_vacancies' }],
+            [{ text: ' Начать', callback_data: 'back_to_main' }],
+            [{ text: ' Вакансии', callback_data: 'show_vacancies' }],
             [
-              { text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }
+              { text: ' Подписаться на обновления', web_app: { url: webAppUrl } }
             ],
             [
-              { text: '📊 Мои подписки', callback_data: 'my_subscriptions' }
+              { text: ' Мои подписки', callback_data: 'my_subscriptions' }
             ]
           ]
         }

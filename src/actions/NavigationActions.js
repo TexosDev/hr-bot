@@ -22,7 +22,7 @@ export class ShowVacanciesAction extends BaseAction {
       const keyboard = createMainMenuKeyboard(vacancies);
       
       await ctx.editMessageText(
-        '👋 Добро пожаловать!\n\nВыберите категорию вакансий:',
+        '� Добро пожаловать!\n\nВыберите категорию вакансий:',
         {
           reply_markup: keyboard.reply_markup
         }
@@ -48,7 +48,7 @@ export class ShowAllVacanciesAction extends BaseAction {
       const vacancies = await getVacanciesFromSupabase();
       const groupedVacancies = groupVacanciesByCategory(vacancies);
       
-      let message = '📋 **Все вакансии**\n\n';
+      let message = ' **Все вакансии**\n\n';
       
       for (const [category, categoryVacancies] of Object.entries(groupedVacancies)) {
         message += `**${category}**\n`;
@@ -62,7 +62,7 @@ export class ShowAllVacanciesAction extends BaseAction {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '⬅️ Назад к категориям', callback_data: 'back_to_categories' }]
+            [{ text: '⬅ Назад к категориям', callback_data: 'back_to_categories' }]
           ]
         }
       });
@@ -88,7 +88,7 @@ export class BackToMainAction extends BaseAction {
       const keyboard = createMainMenuKeyboard(vacancies);
       
       await ctx.editMessageText(
-        '👋 Добро пожаловать!\n\nВыберите категорию вакансий:',
+        '� Добро пожаловать!\n\nВыберите категорию вакансий:',
         {
           reply_markup: keyboard.reply_markup
         }
@@ -115,7 +115,7 @@ export class ChangeVacancyAction extends BaseAction {
       const keyboard = createMainMenuKeyboard(vacancies);
       
       await ctx.editMessageText(
-        '🔄 **Изменение вакансии**\n\nВыберите новую категорию:',
+        ' **Изменение вакансии**\n\nВыберите новую категорию:',
         {
           parse_mode: 'Markdown',
           reply_markup: keyboard.reply_markup
@@ -140,14 +140,14 @@ export class SendResumeAction extends BaseAction {
   async execute(ctx) {
     try {
       await ctx.editMessageText(
-        '📝 **Отправка резюме**\n\n' +
+        ' **Отправка резюме**\n\n' +
         'Пришлите ваше резюме в виде файла (PDF, DOC, DOCX, TXT).\n\n' +
         'Мы рассмотрим ваше резюме и свяжемся с вами, если появится подходящая вакансия.',
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: '⬅️ Назад', callback_data: 'back_to_main' }]
+              [{ text: '⬅ Назад', callback_data: 'back_to_main' }]
             ]
           }
         }
@@ -177,10 +177,10 @@ export class ShowHelpAction extends BaseAction {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '🚀 Начать', callback_data: 'back_to_main' }],
-            [{ text: '📋 Вакансии', callback_data: 'show_vacancies' }],
-            [{ text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }],
-            [{ text: '📊 Мои подписки', callback_data: 'my_subscriptions' }]
+            [{ text: ' Начать', callback_data: 'back_to_main' }],
+            [{ text: ' Вакансии', callback_data: 'show_vacancies' }],
+            [{ text: ' Подписаться на обновления', web_app: { url: webAppUrl } }],
+            [{ text: ' Мои подписки', callback_data: 'my_subscriptions' }]
           ]
         }
       });
@@ -204,7 +204,7 @@ export class MySubscriptionsAction extends BaseAction {
     const userId = ctx.from?.id;
     
     if (!userId) {
-      await this.answerCallback(ctx, '❌ Ошибка получения ID пользователя');
+      await this.answerCallback(ctx, ' Ошибка получения ID пользователя');
       return;
     }
 
@@ -235,16 +235,16 @@ export class MySubscriptionsAction extends BaseAction {
     const webAppUrl = process.env.WEBAPP_URL || `http://localhost:3001/webapp/index.html`;
     
     await ctx.editMessageText(
-      '🔕 **У вас нет активной подписки**\n\n' +
+      '� **У вас нет активной подписки**\n\n' +
       'Для получения персонализированных уведомлений о вакансиях заполните профиль\\.\n\n' +
-      '💡 Система будет сопоставлять ваши предпочтения с тегами вакансий и отправлять релевантные уведомления\\.',
+      ' Система будет сопоставлять ваши предпочтения с тегами вакансий и отправлять релевантные уведомления\\.',
       {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }],
-            [{ text: '📋 Посмотреть вакансии', callback_data: 'show_vacancies' }],
-            [{ text: '🏠 Главное меню', callback_data: 'back_to_main' }]
+            [{ text: ' Подписаться на обновления', web_app: { url: webAppUrl } }],
+            [{ text: ' Посмотреть вакансии', callback_data: 'show_vacancies' }],
+            [{ text: ' Главное меню', callback_data: 'back_to_main' }]
           ]
         }
       }
@@ -255,27 +255,27 @@ export class MySubscriptionsAction extends BaseAction {
     const prefs = preferences.preferences;
     const createdAt = new Date(preferences.created_at).toLocaleDateString('ru-RU');
     
-    let message = '🔔 *Ваша подписка на вакансии*\n\n';
+    let message = ' *Ваша подписка на вакансии*\n\n';
     
     if (prefs.specialization && prefs.specialization.length > 0) {
-      message += `🎯 *Направления:* ${prefs.specialization.join(', ')}\n`;
+      message += ` *Направления:* ${prefs.specialization.join(', ')}\n`;
     }
     
     if (prefs.technologies && prefs.technologies.length > 0) {
-      message += `💻 *Технологии:* ${prefs.technologies.join(', ')}\n`;
+      message += ` *Технологии:* ${prefs.technologies.join(', ')}\n`;
     }
     
     if (prefs.experience && prefs.experience.length > 0) {
-      message += `📈 *Опыт:* ${prefs.experience.join(', ')}\n`;
+      message += `� *Опыт:* ${prefs.experience.join(', ')}\n`;
     }
     
     if (prefs.work_format && prefs.work_format.length > 0) {
-      message += `🏢 *Формат работы:* ${prefs.work_format.join(', ')}\n`;
+      message += ` *Формат работы:* ${prefs.work_format.join(', ')}\n`;
     }
     
-    message += `\n📅 *Подписка с:* ${createdAt}\n`;
-    message += `🔔 *Статус:* Активна\n\n`;
-    message += `💡 *Как это работает:*\n`;
+    message += `\n� *Подписка с:* ${createdAt}\n`;
+    message += ` *Статус:* Активна\n\n`;
+    message += ` *Как это работает:*\n`;
     message += `• Вы получаете уведомления о подходящих вакансиях\n`;
     message += `• Система сопоставляет ваши предпочтения с требованиями\n`;
     message += `• Каждые 2 часа проверяются новые вакансии`;
@@ -289,9 +289,9 @@ export class MySubscriptionsAction extends BaseAction {
     return {
       reply_markup: {
         inline_keyboard: [
-          [{ text: '🔄 Изменить предпочтения', web_app: { url: webAppUrl } }],
-          [{ text: '📋 Посмотреть вакансии', callback_data: 'show_vacancies' }],
-          [{ text: '🏠 Главное меню', callback_data: 'back_to_main' }]
+          [{ text: ' Изменить предпочтения', web_app: { url: webAppUrl } }],
+          [{ text: ' Посмотреть вакансии', callback_data: 'show_vacancies' }],
+          [{ text: ' Главное меню', callback_data: 'back_to_main' }]
         ]
       }
     };

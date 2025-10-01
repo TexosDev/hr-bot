@@ -11,7 +11,7 @@ import { supabase } from './supabase.js';
  */
 export async function syncVacanciesWithTagsFromSheets(sheetsData) {
   try {
-    console.log('🔄 Синхронизация вакансий с тегами...');
+    console.log(' Синхронизация вакансий с тегами...');
     
     const vacancies = sheetsData.map((row, index) => {
       // Парсим теги из строки (предполагаем, что теги в колонке J)
@@ -21,7 +21,7 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
       return {
         title: row[0] || '',
         description: row[1] || '',
-        emoji: row[2] || '💼',
+        emoji: row[2] || '�',
         category: row[3] || 'Общее',
         link: row[4] || '',
         level: row[5] || '',
@@ -38,7 +38,7 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
       };
     }).filter(v => v.title); // Фильтруем пустые строки
     
-    console.log(`📋 Найдено ${vacancies.length} вакансий с тегами`);
+    console.log(` Найдено ${vacancies.length} вакансий с тегами`);
     
     if (vacancies.length === 0) {
       return { success: true, synced: 0, updated: 0 };
@@ -53,7 +53,7 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
       .select('id, title, category, tags');
     
     if (fetchError) {
-      console.error('❌ Ошибка получения существующих вакансий:', fetchError);
+      console.error(' Ошибка получения существующих вакансий:', fetchError);
       return { success: false, error: fetchError.message };
     }
     
@@ -76,10 +76,10 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
           .eq('id', existingVacancy.id);
         
         if (updateError) {
-          console.error(`❌ Ошибка обновления вакансии ${vacancy.title}:`, updateError);
+          console.error(` Ошибка обновления вакансии ${vacancy.title}:`, updateError);
         } else {
           updatedCount++;
-          console.log(`✅ Обновлена вакансия: ${vacancy.title}`);
+          console.log(` Обновлена вакансия: ${vacancy.title}`);
           
           // Обновляем теги вакансии
           await this.updateVacancyTags(existingVacancy.id, vacancy.tags);
@@ -93,10 +93,10 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
           .single();
         
         if (insertError) {
-          console.error(`❌ Ошибка добавления вакансии ${vacancy.title}:`, insertError);
+          console.error(` Ошибка добавления вакансии ${vacancy.title}:`, insertError);
         } else {
           syncedCount++;
-          console.log(`✅ Добавлена новая вакансия: ${vacancy.title}`);
+          console.log(` Добавлена новая вакансия: ${vacancy.title}`);
           
           // Добавляем теги вакансии
           await this.updateVacancyTags(newVacancy.id, vacancy.tags);
@@ -104,11 +104,11 @@ export async function syncVacanciesWithTagsFromSheets(sheetsData) {
       }
     }
     
-    console.log(`🎉 Синхронизация завершена: ${syncedCount} новых, ${updatedCount} обновленных`);
+    console.log(` Синхронизация завершена: ${syncedCount} новых, ${updatedCount} обновленных`);
     return { success: true, synced: syncedCount, updated: updatedCount };
     
   } catch (error) {
-    console.error('❌ Ошибка синхронизации вакансий с тегами:', error);
+    console.error(' Ошибка синхронизации вакансий с тегами:', error);
     return { success: false, error: error.message };
   }
 }
@@ -139,7 +139,7 @@ async function updateVacancyTags(vacancyId, tags) {
         .insert(tagRecords);
 
       if (error) {
-        console.error(`❌ Ошибка вставки тегов:`, error);
+        console.error(` Ошибка вставки тегов:`, error);
         return;
       }
 
@@ -147,9 +147,9 @@ async function updateVacancyTags(vacancyId, tags) {
       await ensureTagsExistInDirectory(tags);
     }
     
-    console.log(`   ✅ Теги вакансии обновлены: ${tags.join(', ')}`);
+    console.log(`    Теги вакансии обновлены: ${tags.join(', ')}`);
   } catch (error) {
-    console.error(`❌ Ошибка обновления тегов для вакансии ${vacancyId}:`, error);
+    console.error(` Ошибка обновления тегов для вакансии ${vacancyId}:`, error);
   }
 }
 
@@ -320,13 +320,13 @@ export async function getVacanciesWithTags() {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('❌ Ошибка получения вакансий с тегами:', error);
+      console.error(' Ошибка получения вакансий с тегами:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения вакансий с тегами:', error);
+    console.error(' Ошибка получения вакансий с тегами:', error);
     return [];
   }
 }
@@ -355,13 +355,13 @@ export async function findVacanciesByTags(tags, limit = 10) {
       .limit(limit);
     
     if (error) {
-      console.error('❌ Ошибка поиска вакансий по тегам:', error);
+      console.error(' Ошибка поиска вакансий по тегам:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error('❌ Ошибка поиска вакансий по тегам:', error);
+    console.error(' Ошибка поиска вакансий по тегам:', error);
     return [];
   }
 }
@@ -379,13 +379,13 @@ export async function getAllTags() {
       .order('name');
     
     if (error) {
-      console.error('❌ Ошибка получения тегов:', error);
+      console.error(' Ошибка получения тегов:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error('❌ Ошибка получения тегов:', error);
+    console.error(' Ошибка получения тегов:', error);
     return [];
   }
 }
