@@ -1,17 +1,24 @@
 import express from 'express';
 import { saveUserPreferences } from '../services/supabase/supabaseUserPreferences.js';
+import { telegramWebAppAuth } from '../middleware/telegramAuth.js';
+import { rateLimiter, validateAndSanitize } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
 /**
  * API для обработки опросов из WebApp
+ * ЗАЩИТА: Telegram auth, rate limiting, input validation
  */
 
 /**
  * Завершение опроса из WebApp
  * POST /api/survey/complete
  */
-router.post('/complete', async (req, res) => {
+router.post('/complete',
+    rateLimiter({ windowMs: 60000, max: 3 }), // Макс 3 запроса в минуту
+    validateAndSanitize, // Валидация и санитизация данных
+    telegramWebAppAuth, // Проверка Telegram подписи
+    async (req, res) => {
     try {
         const {
             firstName, lastName, email, telegram,
@@ -21,13 +28,8 @@ router.post('/complete', async (req, res) => {
             telegramUserId // ✅ НОВОЕ: реальный Telegram ID из WebApp API
         } = req.body;
 
-        console.log('📝 Получены данные из WebApp:', {
-            firstName, lastName, email, telegram,
-            category, skills, experienceYears, workFormat,
-            geoPreference, salaryExpectation, profileLink,
-            hasResumeFile,
-            telegramUserId // Логируем реальный ID
-        });
+        // ✅ БЕЗОПАСНОСТЬ: Не логируем чувствительные данные (email, telegram)
+        console.log('📝 Получен запрос на сохранение предпочтений от пользователя:', telegramUserId || 'anonymous');
 
         // Валидация данных
         if (!firstName || !lastName || !email || !telegram || !category || !skills || !experienceYears || !workFormat) {

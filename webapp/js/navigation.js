@@ -169,11 +169,20 @@ export async function submitForm() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд timeout
 
+        // ✅ БЕЗОПАСНОСТЬ: Добавляем Telegram initData для валидации на сервере
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        
+        // Получаем initData из Telegram WebApp API если доступно
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+            headers['x-telegram-init-data'] = window.Telegram.WebApp.initData;
+            console.log('🔐 Добавлен Telegram auth header для валидации');
+        }
+
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             body: JSON.stringify(formData),
             signal: controller.signal
         });

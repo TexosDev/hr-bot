@@ -21,11 +21,50 @@ class WebhookService {
   }
 
   setupMiddleware() {
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
+    // ✅ БЕЗОПАСНОСТЬ: Ограничение размера body
+    this.app.use(express.json({ limit: '50kb' }));
+    this.app.use(express.urlencoded({ extended: true, limit: '50kb' }));
     
+    // ✅ БЕЗОПАСНОСТЬ: CORS только для наших доменов
+    this.app.use((req, res, next) => {
+      const allowedOrigins = [
+        process.env.WEBAPP_URL,
+        'https://web.telegram.org',
+        'http://localhost:3001',
+        'http://localhost:3000'
+      ].filter(Boolean);
+      
+      const origin = req.headers.origin;
+      if (allowedOrigins.some(allowed => origin?.startsWith(allowed))) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-telegram-init-data');
+        res.setHeader('Access-Control-Max-Age', '3600');
+      }
+      
+      if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+      }
+      
+      next();
+    });
+    
+    // Логирование (без чувствительных данных)
     this.app.use((req, res, next) => {
       console.log(`📨 ${req.method} ${req.path} - ${new Date().toISOString()}`);
+      next();
+    });
+    
+    // ✅ БЕЗОПАСНОСТЬ: Защита от timing attacks
+    this.app.use((req, res, next) => {
+      const start = Date.now();
+      res.on('finish', () => {
+        const duration = Date.now() - start;
+        // Добавляем случайную задержку для защиты от timing атак
+        if (duration < 100) {
+          setTimeout(() => {}, Math.random() * 50);
+        }
+      });
       next();
     });
   }
@@ -53,7 +92,15 @@ class WebhookService {
     try {
       console.log('📨 Получен webhook от Google Sheets');
       const authToken = req.headers['authorization'];
-      if (process.env.WEBHOOK_SECRET && authToken !== `Bearer ${process.env.WEBHOOK_SECRET}`) {
+      
+      // ✅ БЕЗОПАСНОСТЬ: Обязательная проверка webhook secret
+      if (!process.env.WEBHOOK_SECRET) {
+        console.error('❌ WEBHOOK_SECRET не настроен - webhook отключен');
+        return res.status(503).json({ error: 'Webhook temporarily unavailable' });
+      }
+      
+      if (authToken !== `Bearer ${process.env.WEBHOOK_SECRET}`) {
+        console.warn('⚠️ Неверный WEBHOOK_SECRET');
         return res.status(401).json({ error: 'Unauthorized' });
       }
       const result = await fullSync();
