@@ -120,15 +120,20 @@ class SyncScheduler {
     try {
       const result = await syncSurveyQuestions();
       
-      if (result.success && ((result.categories?.synced > 0) || (result.fields?.synced > 0))) {
+      // Не отправляем уведомления - это служебная операция
+      // Уведомления нужны только при ошибках
+      if (!result.success) {
         await notifyAdmin(
-          `🔄 *Синхронизация вопросов*\n\n` +
-          `• Категорий: ${result.categories?.synced || 0}\n` +
-          `• Полей: ${result.fields?.synced || 0}`
+          `❌ *Ошибка синхронизации вопросов*\n\n` +
+          `Ошибка: ${result.error}`
         );
       }
     } catch (error) {
       console.error('Ошибка синхронизации вопросов:', error.message);
+      await notifyAdmin(
+        `❌ *Критическая ошибка синхронизации вопросов*\n\n` +
+        `Ошибка: ${error.message}`
+      );
     }
   }
 

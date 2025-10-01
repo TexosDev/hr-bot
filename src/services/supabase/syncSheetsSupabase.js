@@ -54,17 +54,17 @@ export async function syncVacanciesFromSheetsToSupabase() {
     // Получаем существующие вакансии из Supabase
     const { data: existingVacancies, error: fetchError } = await supabase
       .from('vacancies')
-      .select('title, category');
+      .select('*');
     
     if (fetchError) {
       console.error('❌ Ошибка получения существующих вакансий:', fetchError);
       return { success: false, error: fetchError };
     }
     
-    // Создаем мапу существующих вакансий
+    // Создаем мапу существующих вакансий с полными данными
     const existingMap = new Map();
     existingVacancies.forEach(v => {
-      existingMap.set(`${v.title}_${v.category}`, true);
+      existingMap.set(`${v.title}_${v.category}`, v);
     });
     
     let syncedCount = 0;
@@ -73,20 +73,34 @@ export async function syncVacanciesFromSheetsToSupabase() {
     // Синхронизируем каждую вакансию
     for (const vacancy of vacancies) {
       const key = `${vacancy.title}_${vacancy.category}`;
+      const existing = existingMap.get(key);
       
-      if (existingMap.has(key)) {
-        // Обновляем существующую вакансию
-        const { error: updateError } = await supabase
-          .from('vacancies')
-          .update(vacancy)
-          .eq('title', vacancy.title)
-          .eq('category', vacancy.category);
+      if (existing) {
+        // Проверяем, изменились ли данные
+        const hasChanges = 
+          existing.description !== vacancy.description ||
+          existing.emoji !== vacancy.emoji ||
+          existing.link !== vacancy.link ||
+          existing.level !== vacancy.level ||
+          existing.salary !== vacancy.salary ||
+          existing.requirements !== vacancy.requirements ||
+          existing.benefits !== vacancy.benefits ||
+          existing.is_active !== vacancy.is_active;
         
-        if (updateError) {
-          console.error(`❌ Ошибка обновления вакансии ${vacancy.title}:`, updateError);
-        } else {
-          updatedCount++;
-          console.log(`✅ Обновлена вакансия: ${vacancy.title}`);
+        if (hasChanges) {
+          // Обновляем только если данные изменились
+          const { error: updateError } = await supabase
+            .from('vacancies')
+            .update(vacancy)
+            .eq('title', vacancy.title)
+            .eq('category', vacancy.category);
+          
+          if (updateError) {
+            console.error(`❌ Ошибка обновления вакансии ${vacancy.title}:`, updateError);
+          } else {
+            updatedCount++;
+            console.log(`✅ Обновлена вакансия: ${vacancy.title}`);
+          }
         }
       } else {
         // Добавляем новую вакансию
