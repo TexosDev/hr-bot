@@ -76,9 +76,15 @@ if (SERVICE_MODE === 'webapp') {
   const commandManager = new CommandManager();
   const actionManager = new ActionManager();
   
+  // Google Sheets и Drive настройки
+  const sheetId = process.env.GOOGLE_SHEETS_ID;
+  const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+  
   commandManager.registerAll(bot);
   actionManager.registerAll(bot);
-  bot.on('document', handleDocument);
+  
+  // Регистрируем обработчик документов с параметрами
+  bot.on('document', (ctx) => handleDocument(ctx, driveService, sheetsService, sheetId, folderId));
   bot.on('text', handleText);
   bot.catch((err, ctx) => {
     console.error('❌ Ошибка бота:', err);
