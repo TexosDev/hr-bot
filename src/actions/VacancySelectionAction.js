@@ -39,11 +39,11 @@ export class VacancySelectionAction extends BaseAction {
     setSelectedVacancy(ctx.from.id, vacancy);
     
     // Показываем сообщение о выборе вакансии с предложением подписки
-    const message = ` **Вакансия выбрана!**\n\n` +
-                   ` **${vacancy.emoji} ${vacancy.title}**\n\n` +
-                   ` ${vacancy.description}\n\n` +
-                   ` Уровень: ${vacancy.level || 'Любой'}\n` +
-                   ` Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
+    const message = `✅ **Вакансия выбрана!**\n\n` +
+                   `📋 **${vacancy.emoji} ${vacancy.title}**\n\n` +
+                   `📝 ${vacancy.description}\n\n` +
+                   `📊 Уровень: ${vacancy.level || 'Любой'}\n` +
+                   `💰 Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
                    `Теперь пришлите ваше резюме в виде файла (PDF, DOC, DOCX, TXT).`;
     
     const keyboard = createAfterSelectionKeyboard(vacancy);
@@ -61,10 +61,10 @@ export class VacancySelectionAction extends BaseAction {
    * DRY: Переиспользуемая логика
    */
   createVacancyMessage(vacancy) {
-    return ` **${vacancy.emoji} ${vacancy.title}**\n\n` +
-           ` ${vacancy.description}\n\n` +
-           ` Уровень: ${vacancy.level || 'Любой'}\n` +
-           ` Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
+    return `📋 **${vacancy.emoji} ${vacancy.title}**\n\n` +
+           `📝 ${vacancy.description}\n\n` +
+           `📊 Уровень: ${vacancy.level || 'Любой'}\n` +
+           `💰 Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
            `Выберите действие:`;
   }
 
@@ -73,6 +73,6 @@ export class VacancySelectionAction extends BaseAction {
    * DRY: Переиспользуемая логика
    */
   async handleVacancyNotFound(ctx) {
-    await this.answerCallback(ctx, ' Вакансия не найдена');
+    await this.answerCallback(ctx, '❌ Вакансия не найдена');
   }
 }

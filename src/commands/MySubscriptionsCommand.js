@@ -7,14 +7,14 @@ import { getUserPreferences } from '../services/supabase/supabaseUserPreferences
  */
 export class MySubscriptionsCommand extends BaseCommand {
   constructor() {
-    super('my_subscriptions', ' Мои подписки');
+    super('my_subscriptions', '📊 Мои подписки');
   }
 
   async execute(ctx) {
     const userId = ctx.from?.id;
     
     if (!userId) {
-      await ctx.reply(' Ошибка получения ID пользователя');
+      await ctx.reply('❌ Ошибка получения ID пользователя');
       return;
     }
 
@@ -42,16 +42,16 @@ export class MySubscriptionsCommand extends BaseCommand {
     const webAppUrl = process.env.WEBAPP_URL || `http://localhost:3001/webapp/index.html`;
     
     await ctx.reply(
-      '� *У вас нет активной подписки*\n\n' +
+      '🔕 *У вас нет активной подписки*\n\n' +
       'Для получения персонализированных уведомлений о вакансиях заполните профиль\\.\n\n' +
-      ' Система будет сопоставлять ваши предпочтения с тегами вакансий и отправлять релевантные уведомления\\.',
+      '💡 Система будет сопоставлять ваши предпочтения с тегами вакансий и отправлять релевантные уведомления\\.',
       {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: ' Подписаться на обновления', web_app: { url: webAppUrl } }],
-            [{ text: ' Посмотреть вакансии', callback_data: 'show_vacancies' }],
-            [{ text: ' Главное меню', callback_data: 'back_to_main' }]
+            [{ text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }],
+            [{ text: '📋 Посмотреть вакансии', callback_data: 'show_vacancies' }],
+            [{ text: '🏠 Главное меню', callback_data: 'back_to_main' }]
           ]
         }
       }
@@ -62,27 +62,27 @@ export class MySubscriptionsCommand extends BaseCommand {
     const prefs = preferences.preferences;
     const createdAt = new Date(preferences.created_at).toLocaleDateString('ru-RU');
     
-    let message = ' *Ваша подписка на вакансии*\n\n';
+    let message = '🔔 *Ваша подписка на вакансии*\n\n';
     
     if (prefs.specialization && prefs.specialization.length > 0) {
-      message += ` *Направления:* ${prefs.specialization.join(', ')}\n`;
+      message += `🎯 *Направления:* ${prefs.specialization.join(', ')}\n`;
     }
     
     if (prefs.technologies && prefs.technologies.length > 0) {
-      message += ` *Технологии:* ${prefs.technologies.join(', ')}\n`;
+      message += `💻 *Технологии:* ${prefs.technologies.join(', ')}\n`;
     }
     
     if (prefs.experience && prefs.experience.length > 0) {
-      message += `� *Опыт:* ${prefs.experience.join(', ')}\n`;
+      message += `📈 *Опыт:* ${prefs.experience.join(', ')}\n`;
     }
     
     if (prefs.work_format && prefs.work_format.length > 0) {
-      message += ` *Формат работы:* ${prefs.work_format.join(', ')}\n`;
+      message += `🏢 *Формат работы:* ${prefs.work_format.join(', ')}\n`;
     }
     
-    message += `\n� *Подписка с:* ${createdAt}\n`;
-    message += ` *Статус:* Активна\n\n`;
-    message += ` *Как это работает:*\n`;
+    message += `\n📅 *Подписка с:* ${createdAt}\n`;
+    message += `🔔 *Статус:* Активна\n\n`;
+    message += `💡 *Как это работает:*\n`;
     message += `• Вы получаете уведомления о подходящих вакансиях\n`;
     message += `• Система сопоставляет ваши предпочтения с требованиями\n`;
     message += `• Каждые 2 часа проверяются новые вакансии`;
@@ -96,9 +96,9 @@ export class MySubscriptionsCommand extends BaseCommand {
     return {
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Изменить предпочтения', web_app: { url: webAppUrl } }],
-          [{ text: ' Посмотреть вакансии', callback_data: 'show_vacancies' }],
-          [{ text: ' Главное меню', callback_data: 'back_to_main' }]
+          [{ text: '🔄 Изменить предпочтения', web_app: { url: webAppUrl } }],
+          [{ text: '📋 Посмотреть вакансии', callback_data: 'show_vacancies' }],
+          [{ text: '🏠 Главное меню', callback_data: 'back_to_main' }]
         ]
       }
     };

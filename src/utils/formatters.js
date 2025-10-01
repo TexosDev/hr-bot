@@ -8,7 +8,7 @@
  * DRY: Переиспользуемая логика
  */
 export function formatErrorMessage(operation, error) {
-  return ` Ошибка ${operation}: ${error.message || error}`;
+  return `❌ Ошибка ${operation}: ${error.message || error}`;
 }
 
 /**
@@ -16,7 +16,7 @@ export function formatErrorMessage(operation, error) {
  * DRY: Переиспользуемая логика
  */
 export function formatSuccessMessage(operation, details = '') {
-  return ` ${operation}${details ? `: ${details}` : ''}`;
+  return `✅ ${operation}${details ? `: ${details}` : ''}`;
 }
 
 /**
@@ -24,10 +24,10 @@ export function formatSuccessMessage(operation, details = '') {
  * DRY: Переиспользуемая логика
  */
 export function formatVacancyInfo(vacancy) {
-  return ` **${vacancy.emoji} ${vacancy.title}**\n\n` +
-         ` ${vacancy.description}\n\n` +
-         ` Уровень: ${vacancy.level || 'Любой'}\n` +
-         ` Зарплата: ${vacancy.salary || 'По договоренности'}`;
+  return `📋 **${vacancy.emoji} ${vacancy.title}**\n\n` +
+         `📝 ${vacancy.description}\n\n` +
+         `📊 Уровень: ${vacancy.level || 'Любой'}\n` +
+         `💰 Зарплата: ${vacancy.salary || 'По договоренности'}`;
 }
 
 /**

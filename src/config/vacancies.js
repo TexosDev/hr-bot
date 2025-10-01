@@ -4,37 +4,37 @@ export const VACANCIES = [
     id: 'frontend',
     title: 'Frontend Developer',
     description: 'React, Vue, JavaScript, TypeScript',
-    emoji: ''
+    emoji: '💻'
   },
   {
     id: 'backend',
     title: 'Backend Developer',
     description: 'Node.js, Python, PHP, Java',
-    emoji: '⚙'
+    emoji: '⚙️'
   },
   {
     id: 'fullstack',
     title: 'Fullstack Developer',
     description: 'Frontend + Backend разработка',
-    emoji: ''
+    emoji: '🚀'
   },
   {
     id: 'mobile',
     title: 'Mobile Developer',
     description: 'React Native, Flutter, iOS, Android',
-    emoji: ''
+    emoji: '📱'
   },
   {
     id: 'devops',
     title: 'DevOps Engineer',
     description: 'Docker, Kubernetes, AWS, CI/CD',
-    emoji: ''
+    emoji: '🔧'
   },
   {
     id: 'designer',
     title: 'UI/UX Designer',
     description: 'Figma, Adobe XD, Sketch, Prototyping',
-    emoji: '�'
+    emoji: '🎨'
   },
   {
     id: 'qa',
@@ -46,7 +46,7 @@ export const VACANCIES = [
     id: 'other',
     title: 'Другая позиция',
     description: 'Не нашли подходящую? Выберите это',
-    emoji: '�'
+    emoji: '💼'
   }
 ];
 

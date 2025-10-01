@@ -22,7 +22,7 @@ export function showError(message) {
     errorDiv.className = 'error-message';
     errorDiv.innerHTML = `
         <div class="error-content">
-            <span class="error-icon"></span>
+            <span class="error-icon">⚠️</span>
             <span class="error-text">${message}</span>
         </div>
     `;
@@ -63,7 +63,7 @@ export function showSuccess(message) {
     successDiv.className = 'success-message';
     successDiv.innerHTML = `
         <div class="success-content">
-            <span class="success-icon"></span>
+            <span class="success-icon">✅</span>
             <span class="success-text">${message}</span>
         </div>
     `;
@@ -250,10 +250,10 @@ export async function renderCategories() {
             grid.appendChild(card);
         });
 
-        console.log(` Загружено ${categoriesToShow.length} категорий`);
+        console.log(`✅ Загружено ${categoriesToShow.length} категорий`);
 
     } catch (error) {
-        console.error(' Ошибка отображения категорий:', error);
+        console.error('❌ Ошибка отображения категорий:', error);
         grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff4444;">Ошибка загрузки категорий</div>';
     }
 }
@@ -360,7 +360,7 @@ export function handleFileSelect(input) {
     if (fileName && fileInfo && uploadButton) {
         fileName.textContent = file.name;
         fileInfo.style.display = 'flex';
-        uploadButton.textContent = ' Файл загружен';
+        uploadButton.textContent = '✅ Файл загружен';
 
         // Обновляем состояние
         appState.setUploadedFile(file);
@@ -380,7 +380,7 @@ export function removeFile() {
         input.value = '';
         fileName.textContent = '';
         fileInfo.style.display = 'none';
-        uploadButton.textContent = '� Прикрепить файл резюме';
+        uploadButton.textContent = '📎 Прикрепить файл резюме';
 
         // Обновляем состояние
         appState.removeUploadedFile();

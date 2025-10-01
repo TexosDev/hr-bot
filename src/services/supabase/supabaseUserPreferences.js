@@ -3,7 +3,7 @@ import { supabase } from './supabase.js';
 
 export async function saveUserPreferences(userId, userInfo, preferences) {
   try {
-    console.log(' Сохранение предпочтений пользователя...');
+    console.log('💾 Сохранение предпочтений пользователя...');
     console.log('   User ID:', userId, 'Type:', typeof userId);
     
     // Убеждаемся что userId - число
@@ -26,11 +26,11 @@ export async function saveUserPreferences(userId, userInfo, preferences) {
       .single();
     
     if (error) {
-      console.error(' Ошибка сохранения предпочтений:', error);
+      console.error('❌ Ошибка сохранения предпочтений:', error);
       return null;
     }
     
-    console.log(' Предпочтения сохранены успешно!');
+    console.log('✅ Предпочтения сохранены успешно!');
     console.log('   ID записи:', data.id);
 
     // Автоматически создаем user_tags из preferences
@@ -38,7 +38,7 @@ export async function saveUserPreferences(userId, userInfo, preferences) {
     
     return data;
   } catch (error) {
-    console.error(' Ошибка сохранения предпочтений:', error);
+    console.error('❌ Ошибка сохранения предпочтений:', error);
     return null;
   }
 }
@@ -49,7 +49,7 @@ export async function saveUserPreferences(userId, userInfo, preferences) {
  */
 async function createUserTagsFromPreferences(userId, preferences) {
   try {
-    console.log('�  Создание тегов пользователя...');
+    console.log('🏷️  Создание тегов пользователя...');
     
     const tagNames = new Set();
 
@@ -74,7 +74,7 @@ async function createUserTagsFromPreferences(userId, preferences) {
     console.log(`   Найдено ${tagsArray.length} уникальных тегов`);
 
     if (tagsArray.length === 0) {
-      console.log('    Нет тегов для создания');
+      console.log('   ⚠️ Нет тегов для создания');
       return;
     }
 
@@ -96,17 +96,17 @@ async function createUserTagsFromPreferences(userId, preferences) {
       .insert(userTagsToInsert);
 
     if (error) {
-      console.error('    Ошибка создания тегов:', error);
+      console.error('   ❌ Ошибка создания тегов:', error);
       return;
     }
 
-    console.log(`    Создано ${tagsArray.length} тегов: ${tagsArray.join(', ')}`);
+    console.log(`   ✅ Создано ${tagsArray.length} тегов: ${tagsArray.join(', ')}`);
 
     // Убеждаемся что теги существуют в справочнике tags
     await ensureTagsExist(tagsArray);
 
   } catch (error) {
-    console.error(' Ошибка создания user_tags:', error);
+    console.error('❌ Ошибка создания user_tags:', error);
   }
 }
 
@@ -136,12 +136,12 @@ async function ensureTagsExist(tagNames) {
             is_active: true
           });
 
-        console.log(`   � Создан новый тег в справочнике: ${tagName} (${category})`);
+        console.log(`   📌 Создан новый тег в справочнике: ${tagName} (${category})`);
       }
     }
   } catch (error) {
     // Игнорируем ошибки (не критично)
-    console.warn('    Предупреждение при создании тегов:', error.message);
+    console.warn('   ⚠️ Предупреждение при создании тегов:', error.message);
   }
 }
 
@@ -172,13 +172,13 @@ export async function getUserPreferences(userId) {
       .single();
     
     if (error && error.code !== 'PGRST116') {
-      console.error(' Ошибка получения предпочтений:', error);
+      console.error('❌ Ошибка получения предпочтений:', error);
       return null;
     }
     
     return data;
   } catch (error) {
-    console.error(' Ошибка получения предпочтений:', error);
+    console.error('❌ Ошибка получения предпочтений:', error);
     return null;
   }
 }
@@ -189,7 +189,7 @@ export async function getUserPreferences(userId) {
  */
 export async function updateUserPreferences(userId, preferences) {
   try {
-    console.log(' Обновление предпочтений пользователя...');
+    console.log('🔄 Обновление предпочтений пользователя...');
     
     const { data, error } = await supabase
       .from('user_preferences')
@@ -202,14 +202,14 @@ export async function updateUserPreferences(userId, preferences) {
       .single();
     
     if (error) {
-      console.error(' Ошибка обновления предпочтений:', error);
+      console.error('❌ Ошибка обновления предпочтений:', error);
       return null;
     }
     
-    console.log(' Предпочтения обновлены');
+    console.log('✅ Предпочтения обновлены');
     return data;
   } catch (error) {
-    console.error(' Ошибка обновления предпочтений:', error);
+    console.error('❌ Ошибка обновления предпочтений:', error);
     return null;
   }
 }
@@ -220,7 +220,7 @@ export async function updateUserPreferences(userId, preferences) {
  */
 export async function deactivateUserSubscription(userId) {
   try {
-    console.log('� Деактивация подписки пользователя...');
+    console.log('🔕 Деактивация подписки пользователя...');
     
     const { error } = await supabase
       .from('user_preferences')
@@ -231,14 +231,14 @@ export async function deactivateUserSubscription(userId) {
       .eq('user_id', userId);
     
     if (error) {
-      console.error(' Ошибка деактивации подписки:', error);
+      console.error('❌ Ошибка деактивации подписки:', error);
       return false;
     }
     
-    console.log(' Подписка деактивирована');
+    console.log('✅ Подписка деактивирована');
     return true;
   } catch (error) {
-    console.error(' Ошибка деактивации подписки:', error);
+    console.error('❌ Ошибка деактивации подписки:', error);
     return false;
   }
 }
@@ -255,13 +255,13 @@ export async function getAllActiveSubscribers() {
       .eq('is_active', true);
     
     if (error) {
-      console.error(' Ошибка получения подписчиков:', error);
+      console.error('❌ Ошибка получения подписчиков:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error(' Ошибка получения подписчиков:', error);
+    console.error('❌ Ошибка получения подписчиков:', error);
     return [];
   }
 }
@@ -277,7 +277,7 @@ export async function getSubscriptionStats() {
       .select('preferences, created_at, is_active');
     
     if (error) {
-      console.error(' Ошибка получения статистики:', error);
+      console.error('❌ Ошибка получения статистики:', error);
       return null;
     }
     
@@ -323,7 +323,7 @@ export async function getSubscriptionStats() {
     
     return stats;
   } catch (error) {
-    console.error(' Ошибка получения статистики:', error);
+    console.error('❌ Ошибка получения статистики:', error);
     return null;
   }
 }
@@ -334,20 +334,20 @@ export async function getSubscriptionStats() {
  */
 export async function findMatchingUsers(vacancyId) {
   try {
-    console.log(` Поиск подходящих пользователей для вакансии ${vacancyId}...`);
+    console.log(`🔍 Поиск подходящих пользователей для вакансии ${vacancyId}...`);
     
     const { data, error } = await supabase
       .rpc('find_matching_users', { vacancy_id: vacancyId });
     
     if (error) {
-      console.error(' Ошибка поиска подходящих пользователей:', error);
+      console.error('❌ Ошибка поиска подходящих пользователей:', error);
       return [];
     }
     
-    console.log(` Найдено ${data.length} подходящих пользователей`);
+    console.log(`✅ Найдено ${data.length} подходящих пользователей`);
     return data;
   } catch (error) {
-    console.error(' Ошибка поиска подходящих пользователей:', error);
+    console.error('❌ Ошибка поиска подходящих пользователей:', error);
     return [];
   }
 }
@@ -366,13 +366,13 @@ export async function isUserSubscribed(userId) {
       .single();
     
     if (error && error.code !== 'PGRST116') {
-      console.error(' Ошибка проверки подписки:', error);
+      console.error('❌ Ошибка проверки подписки:', error);
       return false;
     }
     
     return !!data;
   } catch (error) {
-    console.error(' Ошибка проверки подписки:', error);
+    console.error('❌ Ошибка проверки подписки:', error);
     return false;
   }
 }

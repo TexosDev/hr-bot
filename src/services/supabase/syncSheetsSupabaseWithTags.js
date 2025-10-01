@@ -25,7 +25,7 @@ const VACANCIES_SHEET_ID = process.env.GOOGLE_VACANCIES_SHEET_ID || process.env.
  */
 export async function syncVacanciesWithTagsFromSheetsToSupabase() {
   try {
-    console.log(' Синхронизация вакансий с тегами из Google Sheets в Supabase...');
+    console.log('🔄 Синхронизация вакансий с тегами из Google Sheets в Supabase...');
     
     // Получаем данные из Google Sheets
     const response = await sheetsService.spreadsheets.values.get({
@@ -34,10 +34,10 @@ export async function syncVacanciesWithTagsFromSheetsToSupabase() {
     });
     
     const rows = response.data.values || [];
-    console.log(` Получено ${rows.length} строк из Google Sheets`);
+    console.log(`📋 Получено ${rows.length} строк из Google Sheets`);
     
     if (rows.length <= 1) {
-      console.log(' Нет данных для синхронизации');
+      console.log('⚠️ Нет данных для синхронизации');
       return { success: true, synced: 0 };
     }
     
@@ -48,11 +48,11 @@ export async function syncVacanciesWithTagsFromSheetsToSupabase() {
     const result = await syncVacanciesWithTagsFromSheets(vacanciesData);
     
     if (result.success) {
-      console.log(` Синхронизация завершена: ${result.synced} новых, ${result.updated} обновленных`);
+      console.log(`🎉 Синхронизация завершена: ${result.synced} новых, ${result.updated} обновленных`);
       
       // Если есть новые вакансии, отправляем уведомления
       if (result.synced > 0) {
-        console.log(' Отправка уведомлений о новых вакансиях...');
+        console.log('🔔 Отправка уведомлений о новых вакансиях...');
         await sendNotificationsForNewVacancies();
       }
     }
@@ -60,7 +60,7 @@ export async function syncVacanciesWithTagsFromSheetsToSupabase() {
     return result;
     
   } catch (error) {
-    console.error(' Ошибка синхронизации вакансий с тегами:', error);
+    console.error('❌ Ошибка синхронизации вакансий с тегами:', error);
     return { success: false, error: error.message };
   }
 }
@@ -81,16 +81,16 @@ async function sendNotificationsForNewVacancies() {
       .eq('is_active', true);
     
     if (error) {
-      console.error(' Ошибка получения новых вакансий:', error);
+      console.error('❌ Ошибка получения новых вакансий:', error);
       return;
     }
     
     if (newVacancies.length === 0) {
-      console.log('ℹ Нет новых вакансий для уведомлений');
+      console.log('ℹ️ Нет новых вакансий для уведомлений');
       return;
     }
     
-    console.log(`� Отправка уведомлений для ${newVacancies.length} новых вакансий`);
+    console.log(`📢 Отправка уведомлений для ${newVacancies.length} новых вакансий`);
     
     // Отправляем уведомления для каждой новой вакансии
     for (const vacancy of newVacancies) {
@@ -98,17 +98,17 @@ async function sendNotificationsForNewVacancies() {
         const result = await notifyUsersAboutNewVacancy(vacancy.id);
         
         if (result.success) {
-          console.log(` Уведомления отправлены для вакансии "${vacancy.title}": ${result.notified} пользователей`);
+          console.log(`✅ Уведомления отправлены для вакансии "${vacancy.title}": ${result.notified} пользователей`);
         } else {
-          console.error(` Ошибка отправки уведомлений для вакансии "${vacancy.title}": ${result.error}`);
+          console.error(`❌ Ошибка отправки уведомлений для вакансии "${vacancy.title}": ${result.error}`);
         }
       } catch (error) {
-        console.error(` Критическая ошибка уведомлений для вакансии "${vacancy.title}":`, error);
+        console.error(`❌ Критическая ошибка уведомлений для вакансии "${vacancy.title}":`, error);
       }
     }
     
   } catch (error) {
-    console.error(' Ошибка отправки уведомлений о новых вакансиях:', error);
+    console.error('❌ Ошибка отправки уведомлений о новых вакансиях:', error);
   }
 }
 
@@ -118,7 +118,7 @@ async function sendNotificationsForNewVacancies() {
  */
 export async function syncSubscriptionsFromSupabaseToSheets() {
   try {
-    console.log(' Синхронизация подписок из Supabase в Google Sheets...');
+    console.log('🔄 Синхронизация подписок из Supabase в Google Sheets...');
     
     // Получаем подписки из Supabase
     const { data: subscriptions, error } = await supabase
@@ -128,11 +128,11 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error(' Ошибка получения подписок:', error);
+      console.error('❌ Ошибка получения подписок:', error);
       return { success: false, error: error.message };
     }
     
-    console.log(` Получено ${subscriptions.length} подписок из Supabase`);
+    console.log(`📋 Получено ${subscriptions.length} подписок из Supabase`);
     
     if (subscriptions.length === 0) {
       return { success: true, synced: 0 };
@@ -176,11 +176,11 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
       });
     }
     
-    console.log(` Синхронизировано ${subscriptions.length} подписок в Google Sheets`);
+    console.log(`✅ Синхронизировано ${subscriptions.length} подписок в Google Sheets`);
     return { success: true, synced: subscriptions.length };
     
   } catch (error) {
-    console.error(' Ошибка синхронизации подписок:', error);
+    console.error('❌ Ошибка синхронизации подписок:', error);
     return { success: false, error: error.message };
   }
 }
@@ -191,7 +191,7 @@ export async function syncSubscriptionsFromSupabaseToSheets() {
  */
 export async function fullSyncWithTags() {
   try {
-    console.log(' Запуск полной синхронизации с тегами...');
+    console.log('🚀 Запуск полной синхронизации с тегами...');
     
     // 1. Синхронизируем вакансии с тегами из Google Sheets в Supabase
     const vacanciesResult = await syncVacanciesWithTagsFromSheetsToSupabase();
@@ -199,8 +199,8 @@ export async function fullSyncWithTags() {
     // 2. Синхронизируем подписки из Supabase в Google Sheets
     const subscriptionsResult = await syncSubscriptionsFromSupabaseToSheets();
     
-    console.log(' Полная синхронизация с тегами завершена!');
-    console.log(` Результаты:`);
+    console.log('🎉 Полная синхронизация с тегами завершена!');
+    console.log(`📊 Результаты:`);
     console.log(`  - Вакансии: ${vacanciesResult.synced} новых, ${vacanciesResult.updated} обновленных`);
     console.log(`  - Подписки: ${subscriptionsResult.synced} синхронизированных`);
     
@@ -211,7 +211,7 @@ export async function fullSyncWithTags() {
     };
     
   } catch (error) {
-    console.error(' Ошибка полной синхронизации с тегами:', error);
+    console.error('❌ Ошибка полной синхронизации с тегами:', error);
     return { success: false, error: error.message };
   }
 }
@@ -222,7 +222,7 @@ export async function fullSyncWithTags() {
  */
 export async function syncNewVacanciesOnly() {
   try {
-    console.log(' Синхронизация только новых вакансий...');
+    console.log('🔄 Синхронизация только новых вакансий...');
     
     // Получаем данные из Google Sheets
     const response = await sheetsService.spreadsheets.values.get({
@@ -271,7 +271,7 @@ export async function syncNewVacanciesOnly() {
     return result;
     
   } catch (error) {
-    console.error(' Ошибка синхронизации новых вакансий:', error);
+    console.error('❌ Ошибка синхронизации новых вакансий:', error);
     return { success: false, error: error.message };
   }
 }

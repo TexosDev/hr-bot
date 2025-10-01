@@ -19,7 +19,7 @@ export class ApplyToVacancyAction extends BaseAction {
       const vacancy = getVacancyById(vacancies, vacancyId);
       
       if (!vacancy) {
-        await this.answerCallback(ctx, ' Вакансия не найдена');
+        await this.answerCallback(ctx, '❌ Вакансия не найдена');
         return;
       }
 
@@ -27,26 +27,26 @@ export class ApplyToVacancyAction extends BaseAction {
       setSelectedVacancy(ctx.from.id, vacancy);
 
       await ctx.editMessageText(
-        ` **Отлично! Откликаемся на вакансию:**\n\n` +
+        `✅ **Отлично! Откликаемся на вакансию:**\n\n` +
         `${vacancy.emoji} **${vacancy.title}**\n\n` +
-        ` **Следующий шаг:** Отправьте ваше резюме\n\n` +
-        ` Поддерживаются форматы:\n` +
+        `📄 **Следующий шаг:** Отправьте ваше резюме\n\n` +
+        `💡 Поддерживаются форматы:\n` +
         `• PDF (.pdf)\n` +
         `• Word (.doc, .docx)\n` +
         `• Текст (.txt)\n\n` +
-        `Просто прикрепите файл в следующем сообщении �`,
+        `Просто прикрепите файл в следующем сообщении 👇`,
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: ' Выбрать другую вакансию', callback_data: 'back_to_categories' }],
-              [{ text: ' Отменить', callback_data: 'cancel_apply' }]
+              [{ text: '🔄 Выбрать другую вакансию', callback_data: 'back_to_categories' }],
+              [{ text: '❌ Отменить', callback_data: 'cancel_apply' }]
             ]
           }
         }
       );
       
-      await this.answerCallback(ctx, ' Ожидаем ваше резюме');
+      await this.answerCallback(ctx, '✅ Ожидаем ваше резюме');
     } catch (error) {
       await this.handleError(ctx, error, 'отклика на вакансию');
     }
@@ -71,16 +71,16 @@ export class VacancyDetailAction extends BaseAction {
     
     try {
       const vacancies = await getVacanciesFromSupabase();
-      console.log(' VacancyDetailAction - vacancies:', vacancies ? vacancies.length : 'undefined');
+      console.log('🔍 VacancyDetailAction - vacancies:', vacancies ? vacancies.length : 'undefined');
       
       const vacancy = getVacancyById(vacancies, vacancyId);
       
       if (!vacancy) {
-        await this.answerCallback(ctx, ' Вакансия не найдена');
+        await this.answerCallback(ctx, '❌ Вакансия не найдена');
         return;
       }
 
-      console.log(' VacancyDetailAction - vacancy:', vacancy.title);
+      console.log('🔍 VacancyDetailAction - vacancy:', vacancy.title);
       const message = createDetailedVacancyMessage(vacancy, vacancies);
       const keyboard = createVacancyDetailKeyboard(vacancy, true);
       
@@ -112,14 +112,14 @@ export class VacancyBriefAction extends BaseAction {
       const vacancy = getVacancyById(vacancies, vacancyId);
       
       if (!vacancy) {
-        await this.answerCallback(ctx, ' Вакансия не найдена');
+        await this.answerCallback(ctx, '❌ Вакансия не найдена');
         return;
       }
 
-      const message = ` **${vacancy.emoji} ${vacancy.title}**\n\n` +
-                     ` ${vacancy.description}\n\n` +
-                     ` Уровень: ${vacancy.level || 'Любой'}\n` +
-                     ` Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
+      const message = `📋 **${vacancy.emoji} ${vacancy.title}**\n\n` +
+                     `📝 ${vacancy.description}\n\n` +
+                     `📊 Уровень: ${vacancy.level || 'Любой'}\n` +
+                     `💰 Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
                      `Выберите действие:`;
       
       const keyboard = createVacancyDetailKeyboard(vacancy, false);
@@ -158,7 +158,7 @@ export class CategoryAction extends BaseAction {
       
       if (categoryName && categories[categoryName]) {
         const categoryVacancies = categories[categoryName];
-        const message = ` **${categoryName}:**\n\nВыберите вакансию:`;
+        const message = `📋 **${categoryName}:**\n\nВыберите вакансию:`;
         
         await ctx.editMessageText(message, {
           parse_mode: 'Markdown',
@@ -167,7 +167,7 @@ export class CategoryAction extends BaseAction {
         
         await this.answerCallback(ctx, `Показаны вакансии категории: ${categoryName}`);
       } else {
-        await this.answerCallback(ctx, ' Категория не найдена');
+        await this.answerCallback(ctx, '❌ Категория не найдена');
       }
     } catch (error) {
       await this.handleError(ctx, error, 'показа категории');
@@ -189,7 +189,7 @@ export class BackToCategoriesAction extends BaseAction {
       const keyboard = createMainMenuKeyboard(vacancies);
       
       await ctx.editMessageText(
-        '� Добро пожаловать!\n\nВыберите категорию вакансий:',
+        '👋 Добро пожаловать!\n\nВыберите категорию вакансий:',
         {
           reply_markup: keyboard.reply_markup
         }
@@ -219,7 +219,7 @@ export class BackToCategoryAction extends BaseAction {
       
       if (categoryName && categories[categoryName]) {
         const categoryVacancies = categories[categoryName];
-        const message = ` **${categoryName}:**\n\nВыберите вакансию:`;
+        const message = `📋 **${categoryName}:**\n\nВыберите вакансию:`;
         
         await ctx.editMessageText(message, {
           parse_mode: 'Markdown',
@@ -228,7 +228,7 @@ export class BackToCategoryAction extends BaseAction {
         
         await this.answerCallback(ctx, `Возврат к категории: ${categoryName}`);
       } else {
-        await this.answerCallback(ctx, ' Категория не найдена');
+        await this.answerCallback(ctx, '❌ Категория не найдена');
       }
     } catch (error) {
       await this.handleError(ctx, error, 'возврата к категории');

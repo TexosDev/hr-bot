@@ -19,7 +19,7 @@ async function initApp() {
             return;
         }
 
-        console.log(' Инициализация WebApp...');
+        console.log('🚀 Инициализация WebApp...');
 
         // Скрываем индикатор загрузки на всякий случай
         const loading = document.getElementById('loading');
@@ -51,10 +51,10 @@ async function initApp() {
         // Добавляем event delegation для элементов без inline handlers
         await initEventDelegation();
 
-        console.log(' WebApp инициализирован успешно');
+        console.log('✅ WebApp инициализирован успешно');
 
     } catch (error) {
-        console.error(' Ошибка инициализации:', error);
+        console.error('❌ Ошибка инициализации:', error);
         showError('Произошла ошибка при загрузке приложения');
         
         // Скрываем индикатор загрузки в случае ошибки
@@ -151,7 +151,7 @@ function initTelegramWebApp() {
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
 
-        console.log(' Подключено к Telegram WebApp');
+        console.log('📱 Подключено к Telegram WebApp');
 
         // Настраиваем WebApp
         tg.ready();
@@ -170,7 +170,7 @@ function initTelegramWebApp() {
         // Обновляем MainButton при изменении шага
         appState.subscribe((state) => {
             if (state.currentStep === state.totalSteps) {
-                tg.MainButton.text = ' Завершить опрос';
+                tg.MainButton.text = '✅ Завершить опрос';
             } else {
                 tg.MainButton.text = `Далее (${state.currentStep}/${state.totalSteps})`;
             }
@@ -205,9 +205,9 @@ function initTelegramWebApp() {
             applyTelegramTheme(tg.themeParams);
         }
 
-        console.log(' Telegram WebApp API настроен');
+        console.log('✅ Telegram WebApp API настроен');
     } else {
-        console.log(' Не запущено в Telegram, используется браузерный режим');
+        console.log('⚠️ Не запущено в Telegram, используется браузерный режим');
     }
 }
 
@@ -266,7 +266,7 @@ function updateViewport() {
  * Обработка ошибок приложения
  */
 window.addEventListener('error', (event) => {
-    console.error('� Глобальная ошибка:', event.error);
+    console.error('🚨 Глобальная ошибка:', event.error);
     showError('Произошла неожиданная ошибка. Перезагрузите страницу.');
 });
 
@@ -274,7 +274,7 @@ window.addEventListener('error', (event) => {
  * Обработка необработанных промисов
  */
 window.addEventListener('unhandledrejection', (event) => {
-    console.error('� Необработанная ошибка промиса:', event.reason);
+    console.error('🚨 Необработанная ошибка промиса:', event.reason);
     showError('Произошла ошибка сети. Проверьте подключение и попробуйте снова.');
 });
 

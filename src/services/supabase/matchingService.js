@@ -13,7 +13,7 @@ import { supabase } from './supabase.js';
  */
 export async function findMatchingVacancies(userId) {
     try {
-        console.log(` Поиск подходящих вакансий для пользователя ${userId}...`);
+        console.log(`🔍 Поиск подходящих вакансий для пользователя ${userId}...`);
 
         // 1. Получаем теги пользователя
         const { data: userTags, error: userTagsError } = await supabase
@@ -22,12 +22,12 @@ export async function findMatchingVacancies(userId) {
             .eq('user_id', userId);
 
         if (userTagsError) {
-            console.error(' Ошибка получения тегов пользователя:', userTagsError);
+            console.error('❌ Ошибка получения тегов пользователя:', userTagsError);
             return [];
         }
 
         if (!userTags || userTags.length === 0) {
-            console.log('    У пользователя нет тегов');
+            console.log('   ⚠️ У пользователя нет тегов');
             return [];
         }
 
@@ -49,12 +49,12 @@ export async function findMatchingVacancies(userId) {
             .in('tag_name', userTagNames);
 
         if (matchError) {
-            console.error(' Ошибка поиска совпадений:', matchError);
+            console.error('❌ Ошибка поиска совпадений:', matchError);
             return [];
         }
 
         if (!matchingVacancyTags || matchingVacancyTags.length === 0) {
-            console.log('   � Нет вакансий с подходящими тегами');
+            console.log('   📭 Нет вакансий с подходящими тегами');
             return [];
         }
 
@@ -81,7 +81,7 @@ export async function findMatchingVacancies(userId) {
             .map(([id]) => id);
 
         if (vacancyIds.length === 0) {
-            console.log('   � Нет новых подходящих вакансий');
+            console.log('   📭 Нет новых подходящих вакансий');
             return [];
         }
 
@@ -93,7 +93,7 @@ export async function findMatchingVacancies(userId) {
             .eq('is_active', true);
 
         if (vacError) {
-            console.error(' Ошибка получения вакансий:', vacError);
+            console.error('❌ Ошибка получения вакансий:', vacError);
             return [];
         }
 
@@ -107,7 +107,7 @@ export async function findMatchingVacancies(userId) {
         // Сортируем по релевантности
         enrichedVacancies.sort((a, b) => b.matchCount - a.matchCount);
 
-        console.log(`    Найдено ${enrichedVacancies.length} подходящих вакансий`);
+        console.log(`   ✅ Найдено ${enrichedVacancies.length} подходящих вакансий`);
         enrichedVacancies.forEach(v => {
             console.log(`      • ${v.title} (${v.matchCount} совпадений: ${v.matchedTags.join(', ')})`);
         });
@@ -115,7 +115,7 @@ export async function findMatchingVacancies(userId) {
         return enrichedVacancies;
 
     } catch (error) {
-        console.error(' Критическая ошибка поиска вакансий:', error);
+        console.error('❌ Критическая ошибка поиска вакансий:', error);
         return [];
     }
 }
@@ -133,13 +133,13 @@ export async function getUserTags(userId) {
             .eq('user_id', userId);
 
         if (error) {
-            console.error(' Ошибка получения тегов пользователя:', error);
+            console.error('❌ Ошибка получения тегов пользователя:', error);
             return [];
         }
 
         return data || [];
     } catch (error) {
-        console.error(' Ошибка получения тегов пользователя:', error);
+        console.error('❌ Ошибка получения тегов пользователя:', error);
         return [];
     }
 }
@@ -157,13 +157,13 @@ export async function getVacancyTags(vacancyId) {
             .eq('vacancy_id', vacancyId);
 
         if (error) {
-            console.error(' Ошибка получения тегов вакансии:', error);
+            console.error('❌ Ошибка получения тегов вакансии:', error);
             return [];
         }
 
         return data || [];
     } catch (error) {
-        console.error(' Ошибка получения тегов вакансии:', error);
+        console.error('❌ Ошибка получения тегов вакансии:', error);
         return [];
     }
 }

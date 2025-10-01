@@ -13,12 +13,12 @@ import { telegramNotifications } from '../telegram-notifications.js';
  */
 export async function notifyUsersAboutNewVacancy(vacancyId) {
   try {
-    console.log(` Отправка уведомлений о новой вакансии ${vacancyId}...`);
+    console.log(`🔔 Отправка уведомлений о новой вакансии ${vacancyId}...`);
     
     // Получаем данные вакансии
     const vacancy = await getVacancyByIdFromSupabase(vacancyId);
     if (!vacancy) {
-      console.error(` Вакансия ${vacancyId} не найдена`);
+      console.error(`❌ Вакансия ${vacancyId} не найдена`);
       return { success: false, error: 'Вакансия не найдена' };
     }
     
@@ -26,11 +26,11 @@ export async function notifyUsersAboutNewVacancy(vacancyId) {
     const matchingUsers = await findMatchingUsers(vacancyId);
     
     if (matchingUsers.length === 0) {
-      console.log(` Нет подходящих пользователей для вакансии: ${vacancy.title}`);
+      console.log(`⚠️ Нет подходящих пользователей для вакансии: ${vacancy.title}`);
       return { success: true, notified: 0 };
     }
     
-    console.log(`� Найдено ${matchingUsers.length} подходящих пользователей`);
+    console.log(`📢 Найдено ${matchingUsers.length} подходящих пользователей`);
     
     // Создаем сообщение
     const message = createVacancyNotificationMessage(vacancy);
@@ -43,20 +43,20 @@ export async function notifyUsersAboutNewVacancy(vacancyId) {
       try {
         await sendNotificationToUser(user.user_id, message, vacancyId);
         successCount++;
-        console.log(` Уведомление отправлено пользователю: ${user.user_id}`);
+        console.log(`✅ Уведомление отправлено пользователю: ${user.user_id}`);
       } catch (error) {
         errorCount++;
-        console.error(` Ошибка отправки уведомления пользователю ${user.user_id}:`, error);
+        console.error(`❌ Ошибка отправки уведомления пользователю ${user.user_id}:`, error);
         
         // Если пользователь заблокировал бота, деактивируем подписку
         if (error.response?.error_code === 403) {
-          console.log(`� Деактивируем подписку заблокированного пользователя: ${user.user_id}`);
+          console.log(`🗑️ Деактивируем подписку заблокированного пользователя: ${user.user_id}`);
           await deactivateUserSubscription(user.user_id);
         }
       }
     }
     
-    console.log(` Уведомления отправлены: ${successCount} успешно, ${errorCount} с ошибками`);
+    console.log(`📊 Уведомления отправлены: ${successCount} успешно, ${errorCount} с ошибками`);
     
     return {
       success: true,
@@ -65,7 +65,7 @@ export async function notifyUsersAboutNewVacancy(vacancyId) {
     };
     
   } catch (error) {
-    console.error(' Ошибка отправки уведомлений:', error);
+    console.error('❌ Ошибка отправки уведомлений:', error);
     return { success: false, error: error.message };
   }
 }
@@ -75,14 +75,14 @@ export async function notifyUsersAboutNewVacancy(vacancyId) {
  * DRY: Переиспользуемая логика форматирования
  */
 function createVacancyNotificationMessage(vacancy) {
-  let message = ` **Новая вакансия!**\n\n`;
-  message += ` **${vacancy.emoji} ${vacancy.title}**\n\n`;
+  let message = `🔔 **Новая вакансия!**\n\n`;
+  message += `📋 **${vacancy.emoji} ${vacancy.title}**\n\n`;
   
   if (vacancy.description) {
-    message += ` ${vacancy.description}\n\n`;
+    message += `📝 ${vacancy.description}\n\n`;
   }
   
-  message += ` **Детали:**\n`;
+  message += `📊 **Детали:**\n`;
   message += `• Категория: ${vacancy.category}\n`;
   message += `• Уровень: ${vacancy.level || 'Любой'}\n`;
   message += `• Зарплата: ${vacancy.salary || 'По договоренности'}\n`;
@@ -99,7 +99,7 @@ function createVacancyNotificationMessage(vacancy) {
     message += `• Технологии: ${vacancy.tags.join(', ')}\n`;
   }
   
-  message += `\n **Хотите подать отклик?**\n`;
+  message += `\n🎯 **Хотите подать отклик?**\n`;
   message += `Нажмите /start для начала работы с ботом`;
   
   return message;
@@ -113,14 +113,14 @@ async function sendNotificationToUser(userId, message, vacancyId) {
   try {
     // Здесь должна быть логика отправки через бота
     // Пока используем заглушку
-    console.log(` Отправка уведомления пользователю ${userId}: ${message.substring(0, 100)}...`);
+    console.log(`📤 Отправка уведомления пользователю ${userId}: ${message.substring(0, 100)}...`);
     
     // TODO: Интегрировать с реальным ботом
     // await bot.telegram.sendMessage(userId, message, { parse_mode: 'Markdown' });
     
     return true;
   } catch (error) {
-    console.error(` Ошибка отправки уведомления пользователю ${userId}:`, error);
+    console.error(`❌ Ошибка отправки уведомления пользователю ${userId}:`, error);
     throw error;
   }
 }
@@ -131,7 +131,7 @@ async function sendNotificationToUser(userId, message, vacancyId) {
  */
 export async function sendBulkNotifications(vacancyIds) {
   try {
-    console.log(`� Массовая отправка уведомлений для ${vacancyIds.length} вакансий...`);
+    console.log(`📢 Массовая отправка уведомлений для ${vacancyIds.length} вакансий...`);
     
     const results = [];
     
@@ -143,7 +143,7 @@ export async function sendBulkNotifications(vacancyIds) {
     const totalNotified = results.reduce((sum, r) => sum + (r.notified || 0), 0);
     const totalErrors = results.reduce((sum, r) => sum + (r.errors || 0), 0);
     
-    console.log(` Массовая отправка завершена: ${totalNotified} уведомлений, ${totalErrors} ошибок`);
+    console.log(`📊 Массовая отправка завершена: ${totalNotified} уведомлений, ${totalErrors} ошибок`);
     
     return {
       success: true,
@@ -153,7 +153,7 @@ export async function sendBulkNotifications(vacancyIds) {
     };
     
   } catch (error) {
-    console.error(' Ошибка массовой отправки уведомлений:', error);
+    console.error('❌ Ошибка массовой отправки уведомлений:', error);
     return { success: false, error: error.message };
   }
 }
@@ -170,7 +170,7 @@ export async function getNotificationStats() {
       .gte('sent_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()); // За последнюю неделю
     
     if (error) {
-      console.error(' Ошибка получения статистики уведомлений:', error);
+      console.error('❌ Ошибка получения статистики уведомлений:', error);
       return null;
     }
     
@@ -184,7 +184,7 @@ export async function getNotificationStats() {
     
     return stats;
   } catch (error) {
-    console.error(' Ошибка получения статистики уведомлений:', error);
+    console.error('❌ Ошибка получения статистики уведомлений:', error);
     return null;
   }
 }

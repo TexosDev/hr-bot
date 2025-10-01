@@ -47,7 +47,7 @@ export class ActionManager {
     this.registerAction(new ConfirmCancelAction());
     this.registerAction(new KeepResponseAction());
     
-    //  Опросы теперь только через WebApp!
+    // ✅ Опросы теперь только через WebApp!
     // Старые действия удалены: StartSurveyAction, NewSurveyActions и т.д.
   }
 

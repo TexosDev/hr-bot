@@ -19,15 +19,15 @@ export class VacancyShowAction extends BaseAction {
       const vacancy = getVacancyById(vacancies, vacancyId);
       
       if (!vacancy) {
-        await this.answerCallback(ctx, ' Вакансия не найдена');
+        await this.answerCallback(ctx, '❌ Вакансия не найдена');
         return;
       }
 
       // Показываем краткое описание вакансии (как в старом коде)
-      const message = ` **${vacancy.emoji} ${vacancy.title}**\n\n` +
-                     ` ${vacancy.description}\n\n` +
-                     ` Уровень: ${vacancy.level || 'Любой'}\n` +
-                     ` Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
+      const message = `📋 **${vacancy.emoji} ${vacancy.title}**\n\n` +
+                     `📝 ${vacancy.description}\n\n` +
+                     `📊 Уровень: ${vacancy.level || 'Любой'}\n` +
+                     `💰 Зарплата: ${vacancy.salary || 'По договоренности'}\n\n` +
                      `Выберите действие:`;
       
       const keyboard = createVacancyDetailKeyboard(vacancy, false);

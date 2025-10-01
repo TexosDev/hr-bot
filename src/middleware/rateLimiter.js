@@ -29,7 +29,7 @@ export function rateLimiter(options = {}) {
 
         // Проверяем лимит
         if (recentRequests.length >= max) {
-            console.warn(` Rate limit exceeded for ${key}`);
+            console.warn(`⚠️ Rate limit exceeded for ${key}`);
             return res.status(429).json({
                 success: false,
                 error: message,

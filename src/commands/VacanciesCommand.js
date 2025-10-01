@@ -16,21 +16,21 @@ export class VacanciesCommand extends BaseCommand {
         const webAppUrl = process.env.WEBAPP_URL || `http://localhost:3001/webapp/index.html`;
         
         await ctx.reply(
-          `� Привет, ${userName}!\n\n` +
-          '� *Сейчас нет активных вакансий*\n\n' +
-          ' *Но есть отличное решение:*\n' +
+          `👋 Привет, ${userName}!\n\n` +
+          '😔 *Сейчас нет активных вакансий*\n\n' +
+          '💡 *Но есть отличное решение:*\n' +
           'Подпишитесь на обновления → Вы первым узнаете о новых вакансиях\\!\n\n' +
-          ' Или можете отправить резюме прямо сейчас\\.',
+          '📄 Или можете отправить резюме прямо сейчас\\.',
           {
             parse_mode: 'Markdown',
             reply_markup: {
               inline_keyboard: [
-                [{ text: ' Подписаться на обновления', web_app: { url: webAppUrl } }],
+                [{ text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }],
                 [
-                  { text: ' Мои подписки', callback_data: 'my_subscriptions' },
-                  { text: ' Помощь', callback_data: 'show_help' }
+                  { text: '📊 Мои подписки', callback_data: 'my_subscriptions' },
+                  { text: '❓ Помощь', callback_data: 'show_help' }
                 ],
-                [{ text: '� Связаться с админом', url: `https://t.me/${process.env.ADMIN_USERNAME || 'admin'}` }]
+                [{ text: '💬 Связаться с админом', url: `https://t.me/${process.env.ADMIN_USERNAME || 'admin'}` }]
               ]
             }
           }
@@ -41,9 +41,9 @@ export class VacanciesCommand extends BaseCommand {
       const keyboard = createMainMenuKeyboard(vacancies);
       
       await ctx.reply(
-        `� Привет, ${userName}!\n\n` +
-        ` Сейчас доступно ${vacancies.length} ${this.getVacanciesWord(vacancies.length)}\n\n` +
-        '� Выберите категорию:',
+        `👋 Привет, ${userName}!\n\n` +
+        `📊 Сейчас доступно ${vacancies.length} ${this.getVacanciesWord(vacancies.length)}\n\n` +
+        '👇 Выберите категорию:',
         {
           parse_mode: 'Markdown',
           reply_markup: keyboard.reply_markup

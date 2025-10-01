@@ -13,9 +13,9 @@ export class BaseHandler {
   }
 
   async handleError(ctx, error, operation = 'операция') {
-    console.error(` Ошибка ${operation}:`, error);
+    console.error(`❌ Ошибка ${operation}:`, error);
     
-    const errorMessage = ` Ошибка ${operation}. Попробуйте позже.`;
+    const errorMessage = `❌ Ошибка ${operation}. Попробуйте позже.`;
     
     try {
       if (ctx.callbackQuery) {
@@ -24,7 +24,7 @@ export class BaseHandler {
         await ctx.reply(errorMessage);
       }
     } catch (replyError) {
-      console.error(' Ошибка отправки сообщения об ошибке:', replyError);
+      console.error('❌ Ошибка отправки сообщения об ошибке:', replyError);
     }
   }
 
@@ -38,7 +38,7 @@ export class BaseHandler {
     }
 
     if (!ctx.from || !ctx.from.id) {
-      console.warn(' Отсутствует информация о пользователе');
+      console.warn('⚠️ Отсутствует информация о пользователе');
       return;
     }
 

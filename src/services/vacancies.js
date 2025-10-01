@@ -8,9 +8,9 @@ export function createVacanciesService(auth) {
 // Получение вакансий из Google Sheets
 export async function getVacanciesFromSheet(sheetsService, sheetId, range = 'A:I') {
   try {
-    console.log(' Получение вакансий из Google Sheets...');
-    console.log(' ID таблицы:', sheetId);
-    console.log(' Диапазон:', range);
+    console.log('📋 Получение вакансий из Google Sheets...');
+    console.log('📋 ID таблицы:', sheetId);
+    console.log('📋 Диапазон:', range);
 
     const response = await sheetsService.spreadsheets.values.get({
       spreadsheetId: sheetId,
@@ -20,7 +20,7 @@ export async function getVacanciesFromSheet(sheetsService, sheetId, range = 'A:I
     const rows = response.data.values;
     
     if (!rows || rows.length === 0) {
-      console.log(' Нет данных о вакансиях в таблице');
+      console.log('⚠️ Нет данных о вакансиях в таблице');
       return [];
     }
 
@@ -29,7 +29,7 @@ export async function getVacanciesFromSheet(sheetsService, sheetId, range = 'A:I
       id: `vacancy_${index + 1}`,
       title: row[0] || `Вакансия ${index + 1}`,
       description: row[1] || 'Описание не указано',
-      emoji: row[2] || '�',
+      emoji: row[2] || '💼',
       category: row[3] || 'Другие',
       link: row[4] || '',
       level: row[5] || '',
@@ -38,12 +38,12 @@ export async function getVacanciesFromSheet(sheetsService, sheetId, range = 'A:I
       benefits: row[8] || ''
     }));
 
-    console.log(` Получено ${vacancies.length} вакансий из Google Sheets`);
+    console.log(`✅ Получено ${vacancies.length} вакансий из Google Sheets`);
     return vacancies;
 
   } catch (error) {
-    console.error(' Ошибка получения вакансий из Google Sheets:', error);
-    console.log(' Возвращаем пустой список вакансий');
+    console.error('❌ Ошибка получения вакансий из Google Sheets:', error);
+    console.log('⚠️ Возвращаем пустой список вакансий');
     return [];
   }
 }
@@ -60,8 +60,8 @@ export function createMainMenuKeyboard(vacancies) {
     return {
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Подписаться на обновления', web_app: { url: webAppUrl } }],
-          [{ text: '� Связаться с админом', url: `https://t.me/${process.env.ADMIN_USERNAME || 'admin'}` }]
+          [{ text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }],
+          [{ text: '💬 Связаться с админом', url: `https://t.me/${process.env.ADMIN_USERNAME || 'admin'}` }]
         ]
       }
     };
@@ -78,11 +78,11 @@ export function createMainMenuKeyboard(vacancies) {
   
   // Добавляем кнопки навигации
   keyboard.push([
-    { text: ' Подписаться на обновления', web_app: { url: webAppUrl } }
+    { text: '🔔 Подписаться на обновления', web_app: { url: webAppUrl } }
   ]);
   keyboard.push([
-    { text: ' Мои подписки', callback_data: 'my_subscriptions' },
-    { text: ' Помощь', callback_data: 'show_help' }
+    { text: '📊 Мои подписки', callback_data: 'my_subscriptions' },
+    { text: '❓ Помощь', callback_data: 'show_help' }
   ]);
   
   return {
@@ -104,7 +104,7 @@ export function createVacancyKeyboard(vacancies) {
     return {
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Отправить резюме', callback_data: 'send_resume' }]
+          [{ text: '📝 Отправить резюме', callback_data: 'send_resume' }]
         ]
       }
     };
@@ -120,8 +120,8 @@ export function createVacancyKeyboard(vacancies) {
   
   // Добавляем кнопки навигации
   keyboard.push([
-    { text: ' Изменить отклик', callback_data: 'change_response' },
-    { text: ' Все вакансии', callback_data: 'show_all_vacancies' }
+    { text: '🔄 Изменить отклик', callback_data: 'change_response' },
+    { text: '📋 Все вакансии', callback_data: 'show_all_vacancies' }
   ]);
   
   return {
@@ -177,7 +177,7 @@ export function createCategoryKeyboard(categoryVacancies, categoryName) {
   
   // Добавляем кнопку "Назад"
   keyboard.push([
-    { text: '⬅ Назад к категориям', callback_data: 'back_to_categories' }
+    { text: '⬅️ Назад к категориям', callback_data: 'back_to_categories' }
   ]);
   
   return {
@@ -211,7 +211,7 @@ export function createTelegraphContent(vacancy, vacancies) {
     },
     {
       tag: 'h4',
-      children: [' Требования:']
+      children: ['📋 Требования:']
     },
     {
       tag: 'ul',
@@ -219,7 +219,7 @@ export function createTelegraphContent(vacancy, vacancies) {
     },
     {
       tag: 'h4',
-      children: [' Условия:']
+      children: ['💰 Условия:']
     },
     {
       tag: 'ul',
@@ -231,7 +231,7 @@ export function createTelegraphContent(vacancy, vacancies) {
     },
     {
       tag: 'h4',
-      children: [' Как подать заявку:']
+      children: ['📞 Как подать заявку:']
     },
     {
       tag: 'ol',
@@ -243,20 +243,20 @@ export function createTelegraphContent(vacancy, vacancies) {
     },
     {
       tag: 'p',
-      children: [' **Совет:** Убедитесь, что ваше резюме актуально и содержит релевантный опыт работы.']
+      children: ['💡 **Совет:** Убедитесь, что ваше резюме актуально и содержит релевантный опыт работы.']
     }
   ];
 }
 
 // Получение требований по категории (из Google Sheets)
 function getRequirementsByCategory(category, vacancies) {
-  console.log(' getRequirementsByCategory - category:', category);
-  console.log(' getRequirementsByCategory - vacancies type:', typeof vacancies);
-  console.log(' getRequirementsByCategory - vacancies isArray:', Array.isArray(vacancies));
+  console.log('🔍 getRequirementsByCategory - category:', category);
+  console.log('🔍 getRequirementsByCategory - vacancies type:', typeof vacancies);
+  console.log('🔍 getRequirementsByCategory - vacancies isArray:', Array.isArray(vacancies));
   
   // Проверяем, что vacancies существует и является массивом
   if (!vacancies || !Array.isArray(vacancies)) {
-    console.log(' getRequirementsByCategory - vacancies is invalid, returning empty array');
+    console.log('❌ getRequirementsByCategory - vacancies is invalid, returning empty array');
     return [];
   }
   
@@ -300,18 +300,18 @@ export function createVacancyDetailKeyboard(vacancy, isDetailed = false) {
   const keyboard = [
     [
       { 
-        text: ' Откликнуться на вакансию', 
+        text: '📝 Откликнуться на вакансию', 
         callback_data: `apply_${vacancy.id}` 
       }
     ],
     [
       { 
-        text: isDetailed ? ' Краткое описание' : '� Подробное описание', 
+        text: isDetailed ? '📋 Краткое описание' : '📖 Подробное описание', 
         callback_data: isDetailed ? `brief_${vacancy.id}` : `detail_${vacancy.id}` 
       }
     ],
     [
-      { text: '⬅ Назад', callback_data: `back_to_category_${vacancy.category}` }
+      { text: '⬅️ Назад', callback_data: `back_to_category_${vacancy.category}` }
     ]
   ];
   
@@ -334,40 +334,40 @@ export function getVacancyById(vacancies, id) {
 export function createDetailedVacancyMessage(vacancy, vacancies) {
   // Проверяем, что vacancy существует
   if (!vacancy) {
-    return ' Вакансия не найдена';
+    return '❌ Вакансия не найдена';
   }
   
   const requirements = getRequirementsByCategory(vacancy.category, vacancies);
   const benefits = getBenefitsByCategory(vacancy.category, vacancies);
   
-  let message = ` **${vacancy.emoji || '�'} ${vacancy.title || 'Вакансия'}**\n\n`;
-  message += ` **Описание:**\n${vacancy.description || 'Описание не указано'}\n\n`;
+  let message = `📋 **${vacancy.emoji || '💼'} ${vacancy.title || 'Вакансия'}**\n\n`;
+  message += `📝 **Описание:**\n${vacancy.description || 'Описание не указано'}\n\n`;
   
   if (vacancy.level && vacancy.level.trim()) {
-    message += ` **Уровень:** ${vacancy.level}\n`;
+    message += `📊 **Уровень:** ${vacancy.level}\n`;
   }
   if (vacancy.salary && vacancy.salary.trim()) {
-    message += ` **Зарплата:** ${vacancy.salary}\n`;
+    message += `💰 **Зарплата:** ${vacancy.salary}\n`;
   }
   
   if (requirements.length > 0) {
-    message += `\n **Требования:**\n`;
+    message += `\n📋 **Требования:**\n`;
     requirements.forEach((req, index) => {
       message += `${index + 1}. ${req}\n`;
     });
   }
   
   if (benefits.length > 0) {
-    message += `\n **Условия:**\n`;
+    message += `\n💰 **Условия:**\n`;
     benefits.forEach(benefit => {
       message += `• ${benefit}\n`;
     });
   }
   
-  message += `\n\n **Хотите откликнуться?**\n`;
-  message += `1. Нажмите " Откликнуться"\n`;
+  message += `\n\n💡 **Хотите откликнуться?**\n`;
+  message += `1. Нажмите "📝 Откликнуться"\n`;
   message += `2. Отправьте ваше резюме (PDF/DOC/DOCX/TXT)\n`;
-  message += `3. Готово! `;
+  message += `3. Готово! ✅`;
   
   return message;
 }
@@ -376,11 +376,11 @@ export function createDetailedVacancyMessage(vacancy, vacancies) {
 export function createAfterSelectionKeyboard(vacancy = null) {
   const keyboard = [
     [
-      { text: ' Изменить вакансию', callback_data: 'change_vacancy' },
-      { text: ' Список вакансий', callback_data: 'show_vacancies' }
+      { text: '🔄 Изменить вакансию', callback_data: 'change_vacancy' },
+      { text: '📋 Список вакансий', callback_data: 'show_vacancies' }
     ],
     [
-      { text: ' Отменить отклик', callback_data: 'cancel_response' }
+      { text: '❌ Отменить отклик', callback_data: 'cancel_response' }
     ]
   ];
   
@@ -388,7 +388,7 @@ export function createAfterSelectionKeyboard(vacancy = null) {
   if (vacancy && vacancy.category) {
     keyboard.splice(1, 0, [
       { 
-        text: ` Подписаться на "${vacancy.category}"`, 
+        text: `🔔 Подписаться на "${vacancy.category}"`, 
         callback_data: `subscribe_category_${vacancy.category.toLowerCase().replace(/\s+/g, '_')}` 
       }
     ]);
@@ -407,8 +407,8 @@ export function createCancelKeyboard() {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: ' Да, отменить', callback_data: 'confirm_cancel' },
-          { text: ' Нет, продолжить', callback_data: 'keep_response' }
+          { text: '✅ Да, отменить', callback_data: 'confirm_cancel' },
+          { text: '❌ Нет, продолжить', callback_data: 'keep_response' }
         ]
       ]
     }

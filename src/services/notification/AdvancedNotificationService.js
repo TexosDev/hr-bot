@@ -40,7 +40,7 @@ export class AdvancedNotificationService {
       }
 
       if (totalSent > 0) {
-        console.log(` Отправлено ${totalSent} уведомлений (обработано ${users.length} пользователей)`);
+        console.log(`✅ Отправлено ${totalSent} уведомлений (обработано ${users.length} пользователей)`);
       }
       
       return { 
@@ -121,15 +121,15 @@ export class AdvancedNotificationService {
       reply_markup: {
         inline_keyboard: [
           [{
-            text: ' Посмотреть детали',
+            text: '📋 Посмотреть детали',
             callback_data: `detail_${vacancy.id}`
           }],
           [{
-            text: ' Откликнуться',
+            text: '📝 Откликнуться',
             callback_data: `apply_${vacancy.id}`
           }],
           [{
-            text: ' Мои подписки',
+            text: '🔔 Мои подписки',
             callback_data: 'my_subscriptions'
           }]
         ]
@@ -140,36 +140,36 @@ export class AdvancedNotificationService {
   createPersonalizedMessage(user, vacancy, matchCount, matchedTags) {
     const userName = user.first_name || user.username || 'Коллега';
     
-    let message = ` *${userName}, для вас найдена подходящая вакансия\\!*\n\n`;
+    let message = `🎯 *${userName}, для вас найдена подходящая вакансия\\!*\n\n`;
     
-    message += `� *${this.escapeMarkdown(vacancy.title)}*\n`;
-    message += ` ${this.escapeMarkdown(vacancy.category || 'Не указано')}\n\n`;
+    message += `💼 *${this.escapeMarkdown(vacancy.title)}*\n`;
+    message += `🏢 ${this.escapeMarkdown(vacancy.category || 'Не указано')}\n\n`;
     
     if (vacancy.salary) {
-      message += ` ${this.escapeMarkdown(vacancy.salary)}\n`;
+      message += `💰 ${this.escapeMarkdown(vacancy.salary)}\n`;
     }
     
     if (vacancy.work_type) {
-      message += `� ${this.escapeMarkdown(vacancy.work_type)}\n`;
+      message += `📍 ${this.escapeMarkdown(vacancy.work_type)}\n`;
     }
     
     if (vacancy.location) {
-      message += `� ${this.escapeMarkdown(vacancy.location)}\n`;
+      message += `🌍 ${this.escapeMarkdown(vacancy.location)}\n`;
     }
     
     // Краткое описание (первые 200 символов)
     if (vacancy.description) {
       const shortDesc = vacancy.description.substring(0, 200);
-      message += `\n ${this.escapeMarkdown(shortDesc)}${vacancy.description.length > 200 ? '...' : ''}\n`;
+      message += `\n📝 ${this.escapeMarkdown(shortDesc)}${vacancy.description.length > 200 ? '...' : ''}\n`;
     }
     
     // Показываем совпадающие теги
     if (matchedTags && matchedTags.length > 0) {
       const tags = matchedTags.slice(0, 5).map(t => this.escapeMarkdown(t)).join(', ');
-      message += `\n� *Совпадения:* ${tags} \\(${matchCount}\\)\n`;
+      message += `\n🏷️ *Совпадения:* ${tags} \\(${matchCount}\\)\n`;
     }
     
-    message += `\n _Вакансия подобрана по вашим предпочтениям_`;
+    message += `\n💡 _Вакансия подобрана по вашим предпочтениям_`;
     
     return message;
   }

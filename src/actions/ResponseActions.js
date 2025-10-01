@@ -20,13 +20,13 @@ export class CancelApplyAction extends BaseAction {
       clearSession(ctx.from.id);
       
       await ctx.editMessageText(
-        ' **Отклик отменен**\n\n' +
+        '❌ **Отклик отменен**\n\n' +
         'Вы можете выбрать другую вакансию или просто посмотреть список.',
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: ' Посмотреть вакансии', callback_data: 'back_to_categories' }]
+              [{ text: '📋 Посмотреть вакансии', callback_data: 'back_to_categories' }]
             ]
           }
         }
@@ -52,12 +52,12 @@ export class ChangeResponseAction extends BaseAction {
       const selectedVacancy = getSelectedVacancy(ctx.from.id);
       
       if (!selectedVacancy) {
-        await this.answerCallback(ctx, ' Сначала выберите вакансию');
+        await this.answerCallback(ctx, '❌ Сначала выберите вакансию');
         return;
       }
 
       await ctx.editMessageText(
-        ' **Изменение отклика**\n\n' +
+        '🔄 **Изменение отклика**\n\n' +
         `Выбранная вакансия: ${selectedVacancy.emoji} ${selectedVacancy.title}\n\n` +
         'Пришлите новое резюме или выберите другую вакансию.',
         {
@@ -86,12 +86,12 @@ export class CancelResponseAction extends BaseAction {
       const selectedVacancy = getSelectedVacancy(ctx.from.id);
       
       if (!selectedVacancy) {
-        await this.answerCallback(ctx, ' Нет активного отклика для отмены');
+        await this.answerCallback(ctx, '❌ Нет активного отклика для отмены');
         return;
       }
 
       await ctx.editMessageText(
-        ' **Отмена отклика**\n\n' +
+        '❌ **Отмена отклика**\n\n' +
         `Вы уверены, что хотите отменить отклик на вакансию "${selectedVacancy.title}"?`,
         {
           parse_mode: 'Markdown',
@@ -119,14 +119,14 @@ export class ConfirmCancelAction extends BaseAction {
       clearSession(ctx.from.id);
       
       await ctx.editMessageText(
-        ' **Отклик отменен**\n\n' +
+        '✅ **Отклик отменен**\n\n' +
         'Ваш отклик был отменен. Вы можете выбрать другую вакансию или отправить резюме в свободной форме.',
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: ' Выбрать вакансию', callback_data: 'show_vacancies' }],
-              [{ text: ' Отправить резюме', callback_data: 'send_resume' }]
+              [{ text: '📋 Выбрать вакансию', callback_data: 'show_vacancies' }],
+              [{ text: '📝 Отправить резюме', callback_data: 'send_resume' }]
             ]
           }
         }
@@ -152,12 +152,12 @@ export class KeepResponseAction extends BaseAction {
       const selectedVacancy = getSelectedVacancy(ctx.from.id);
       
       if (!selectedVacancy) {
-        await this.answerCallback(ctx, ' Нет выбранной вакансии');
+        await this.answerCallback(ctx, '❌ Нет выбранной вакансии');
         return;
       }
 
       await ctx.editMessageText(
-        ' **Отклик сохранен**\n\n' +
+        '✅ **Отклик сохранен**\n\n' +
         `Вакансия: ${selectedVacancy.emoji} ${selectedVacancy.title}\n\n` +
         'Теперь пришлите ваше резюме в виде файла (PDF, DOC, DOCX, TXT).',
         {

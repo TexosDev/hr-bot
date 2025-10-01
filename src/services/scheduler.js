@@ -38,7 +38,7 @@ class SyncScheduler {
     this.jobs = [frequentSync, dailySync, eveningSync, personalizedNotifications, questionsSync];
     this.isRunning = true;
 
-    console.log(' Scheduler started');
+    console.log('✅ Scheduler started');
   }
 
   stop() {
@@ -68,12 +68,12 @@ class SyncScheduler {
           await notifyAdmin(message);
         }
       } else {
-        const errorMessage = ` Ошибка ${type} синхронизации: ${result.error}`;
+        const errorMessage = `❌ Ошибка ${type} синхронизации: ${result.error}`;
         console.error(errorMessage);
         await notifyAdmin(errorMessage);
       }
     } catch (error) {
-      const errorMessage = ` Критическая ошибка ${type} синхронизации: ${error.message}`;
+      const errorMessage = `❌ Критическая ошибка ${type} синхронизации: ${error.message}`;
       console.error(errorMessage);
       await notifyAdmin(errorMessage);
     }
@@ -87,8 +87,8 @@ class SyncScheduler {
     const vacancies = result.vacancies || {};
     const subscriptions = result.subscriptions || {};
     
-    return ` ${type} синхронизация завершена!\n\n` +
-           ` Результаты:\n` +
+    return `🔄 ${type} синхронизация завершена!\n\n` +
+           `📊 Результаты:\n` +
            `• Вакансии: ${vacancies.synced || 0} новых, ${vacancies.updated || 0} обновленных\n` +
            `• Подписки: ${subscriptions.synced || 0} синхронизированных\n\n` +
            `⏰ ${new Date().toLocaleString('ru-RU')}`;
@@ -123,7 +123,7 @@ class SyncScheduler {
       
       if (result.success && ((result.categories?.synced > 0) || (result.fields?.synced > 0))) {
         await notifyAdmin(
-          ` *Синхронизация вопросов*\n\n` +
+          `🔄 *Синхронизация вопросов*\n\n` +
           `• Категорий: ${result.categories?.synced || 0}\n` +
           `• Полей: ${result.fields?.synced || 0}`
         );
@@ -143,7 +143,7 @@ class SyncScheduler {
       
       if (result.success && result.sent > 0) {
         await notifyAdmin(
-          ` *Рассылка завершена*\n\n` +
+          `🔔 *Рассылка завершена*\n\n` +
           `• Отправлено: ${result.sent}\n` +
           `• Пользователей: ${result.users_processed}`
         );

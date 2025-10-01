@@ -3,7 +3,7 @@ import { supabase } from './supabase.js';
 // Добавление отклика в Supabase
 export async function addResponseToSupabase(responseData) {
   try {
-    console.log(' Добавление отклика в Supabase...');
+    console.log('📝 Добавление отклика в Supabase...');
     
     const { data, error } = await supabase
       .from('responses')
@@ -12,14 +12,14 @@ export async function addResponseToSupabase(responseData) {
       .single();
     
     if (error) {
-      console.error(' Ошибка добавления отклика:', error);
+      console.error('❌ Ошибка добавления отклика:', error);
       return null;
     }
     
-    console.log(' Отклик добавлен в Supabase');
+    console.log('✅ Отклик добавлен в Supabase');
     return data;
   } catch (error) {
-    console.error(' Ошибка добавления отклика:', error);
+    console.error('❌ Ошибка добавления отклика:', error);
     return null;
   }
 }
@@ -27,7 +27,7 @@ export async function addResponseToSupabase(responseData) {
 // Получение всех откликов из Supabase
 export async function getResponsesFromSupabase() {
   try {
-    console.log(' Получение откликов из Supabase...');
+    console.log('📋 Получение откликов из Supabase...');
     
     const { data, error } = await supabase
       .from('responses')
@@ -35,14 +35,14 @@ export async function getResponsesFromSupabase() {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error(' Ошибка получения откликов:', error);
+      console.error('❌ Ошибка получения откликов:', error);
       return [];
     }
     
-    console.log(` Получено ${data.length} откликов из Supabase`);
+    console.log(`📋 Получено ${data.length} откликов из Supabase`);
     return data;
   } catch (error) {
-    console.error(' Ошибка получения откликов:', error);
+    console.error('❌ Ошибка получения откликов:', error);
     return [];
   }
 }
@@ -57,13 +57,13 @@ export async function getUserResponsesFromSupabase(userId) {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error(' Ошибка получения откликов пользователя:', error);
+      console.error('❌ Ошибка получения откликов пользователя:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error(' Ошибка получения откликов пользователя:', error);
+    console.error('❌ Ошибка получения откликов пользователя:', error);
     return [];
   }
 }
@@ -78,13 +78,13 @@ export async function getResponsesByVacancyFromSupabase(vacancyId) {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error(' Ошибка получения откликов по вакансии:', error);
+      console.error('❌ Ошибка получения откликов по вакансии:', error);
       return [];
     }
     
     return data;
   } catch (error) {
-    console.error(' Ошибка получения откликов по вакансии:', error);
+    console.error('❌ Ошибка получения откликов по вакансии:', error);
     return [];
   }
 }
@@ -92,7 +92,7 @@ export async function getResponsesByVacancyFromSupabase(vacancyId) {
 // Обновление статуса отклика
 export async function updateResponseStatusInSupabase(responseId, status) {
   try {
-    console.log(' Обновление статуса отклика в Supabase...');
+    console.log('📝 Обновление статуса отклика в Supabase...');
     
     const { data, error } = await supabase
       .from('responses')
@@ -102,14 +102,14 @@ export async function updateResponseStatusInSupabase(responseId, status) {
       .single();
     
     if (error) {
-      console.error(' Ошибка обновления статуса отклика:', error);
+      console.error('❌ Ошибка обновления статуса отклика:', error);
       return null;
     }
     
-    console.log(' Статус отклика обновлен в Supabase');
+    console.log('✅ Статус отклика обновлен в Supabase');
     return data;
   } catch (error) {
-    console.error(' Ошибка обновления статуса отклика:', error);
+    console.error('❌ Ошибка обновления статуса отклика:', error);
     return null;
   }
 }
@@ -122,7 +122,7 @@ export async function getResponsesStatsFromSupabase() {
       .select('status, created_at');
     
     if (error) {
-      console.error(' Ошибка получения статистики откликов:', error);
+      console.error('❌ Ошибка получения статистики откликов:', error);
       return null;
     }
     
@@ -143,7 +143,7 @@ export async function getResponsesStatsFromSupabase() {
       }).length
     };
   } catch (error) {
-    console.error(' Ошибка получения статистики откликов:', error);
+    console.error('❌ Ошибка получения статистики откликов:', error);
     return null;
   }
 }

@@ -11,24 +11,24 @@ import fetch from 'node-fetch';
 
 // Обработка документов
 export async function handleDocument(ctx, driveService, sheetsService, sheetId, folderId) {
-  console.log(' Начало обработки документа');
+  console.log('🚀 Начало обработки документа');
   
   // Проверяем, выбрана ли вакансия
   const userId = ctx.from.id;
   const selectedVacancy = getSelectedVacancy(userId);
-  console.log(' Проверка вакансии для пользователя:', userId);
-  console.log(' Выбранная вакансия:', selectedVacancy);
+  console.log('🔍 Проверка вакансии для пользователя:', userId);
+  console.log('🔍 Выбранная вакансия:', selectedVacancy);
   
   // Если вакансия не выбрана, используем общее резюме
   if (!selectedVacancy) {
-    console.log(' Вакансия не выбрана, обрабатываем как общее резюме');
+    console.log('⚠️ Вакансия не выбрана, обрабатываем как общее резюме');
   }
   
-  console.log(' Вакансия выбрана:', selectedVacancy ? selectedVacancy.title : 'Общее резюме');
-  console.log(' Проверка переменных:');
-  console.log(' Sheet ID:', sheetId);
-  console.log('� Folder ID:', folderId);
-  console.log('� Admin Chat ID:', process.env.ADMIN_CHAT_ID);
+  console.log('✅ Вакансия выбрана:', selectedVacancy ? selectedVacancy.title : 'Общее резюме');
+  console.log('🔍 Проверка переменных:');
+  console.log('📊 Sheet ID:', sheetId);
+  console.log('📁 Folder ID:', folderId);
+  console.log('📧 Admin Chat ID:', process.env.ADMIN_CHAT_ID);
   
   try {
     const doc = ctx.message.document;
@@ -60,9 +60,9 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
     const botUsername = process.env.BOT_USERNAME || 'your_bot_username';
     let telegramLink = `https://t.me/${botUsername}?start=msg_${messageId}`;
     
-    console.log(' Создана ссылка на Telegram сообщение:', telegramLink);
-    console.log('� Chat ID:', chatId);
-    console.log(' Message ID:', messageId);
+    console.log('📱 Создана ссылка на Telegram сообщение:', telegramLink);
+    console.log('💬 Chat ID:', chatId);
+    console.log('📨 Message ID:', messageId);
 
     // Извлечение контактов
     const { email, phone, fullNameGuess } = parseContacts(textPreview);
@@ -105,21 +105,21 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
         textPreview // Текст из резюме
       );
       await ctx.telegram.sendMessage(process.env.ADMIN_CHAT_ID, adminMsg);
-      console.log(' Уведомление админу отправлено');
+      console.log('✅ Уведомление админу отправлено');
     } catch (notificationError) {
-      console.error(' Ошибка отправки уведомления админу:', notificationError);
+      console.error('❌ Ошибка отправки уведомления админу:', notificationError);
     }
 
     // Отправка в группу с резюме (если настроена)
-    console.log(' Проверка настроек группы...');
-    console.log(' RESUME_GROUP_ID:', CONFIG.RESUME_GROUP_ID);
-    console.log(' process.env.RESUME_GROUP_ID:', process.env.RESUME_GROUP_ID);
+    console.log('🔍 Проверка настроек группы...');
+    console.log('📋 RESUME_GROUP_ID:', CONFIG.RESUME_GROUP_ID);
+    console.log('📋 process.env.RESUME_GROUP_ID:', process.env.RESUME_GROUP_ID);
     
     const resumeGroupId = process.env.RESUME_GROUP_ID;
     
     if (resumeGroupId) {
       try {
-        console.log(' Отправка в группу:', resumeGroupId);
+        console.log('📤 Отправка в группу:', resumeGroupId);
         
         const groupMsg = CONFIG.MESSAGES.GROUP_RESUME_MESSAGE(
           ctx.from,
@@ -128,7 +128,7 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
           textPreview
         );
         
-        console.log(' Сообщение для группы:', groupMsg);
+        console.log('📝 Сообщение для группы:', groupMsg);
         
         const groupMessage = await ctx.telegram.sendMessage(resumeGroupId, groupMsg, {
           parse_mode: 'HTML'
@@ -139,27 +139,27 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
         
         // Обновляем ссылку на сообщение в группе
         const groupMessageLink = `https://t.me/c/${resumeGroupId.replace('-100', '')}/${groupMessage.message_id}`;
-        console.log('� Ссылка на сообщение в группе:', groupMessageLink);
+        console.log('🔗 Ссылка на сообщение в группе:', groupMessageLink);
         
         // Обновляем ссылку в данных для записи
         telegramLink = groupMessageLink;
         
-        console.log(' Резюме отправлено в группу');
+        console.log('✅ Резюме отправлено в группу');
       } catch (groupError) {
-        console.error(' Ошибка отправки в группу:', groupError);
-        console.error(' Детали ошибки:', groupError.response?.data || groupError.message);
+        console.error('❌ Ошибка отправки в группу:', groupError);
+        console.error('❌ Детали ошибки:', groupError.response?.data || groupError.message);
       }
     } else {
-      console.log(' RESUME_GROUP_ID не настроен - пропускаем отправку в группу');
+      console.log('⚠️ RESUME_GROUP_ID не настроен - пропускаем отправку в группу');
     }
 
     // Запись в Google Sheets (после отправки в группу для получения правильной ссылки)
     try {
-      console.log(' Попытка записи в Google Sheets...');
-      console.log(' ID таблицы:', sheetId);
-      console.log(' Диапазон:', CONFIG.RESPONSES_SHEET_RANGE);
-      console.log(' Данные для записи:', rowData);
-      console.log(' Sheets Service:', !!sheetsService);
+      console.log('📊 Попытка записи в Google Sheets...');
+      console.log('📋 ID таблицы:', sheetId);
+      console.log('📋 Диапазон:', CONFIG.RESPONSES_SHEET_RANGE);
+      console.log('📋 Данные для записи:', rowData);
+      console.log('📋 Sheets Service:', !!sheetsService);
       
       // Сохраняем в Supabase
       const responseData = {
@@ -178,47 +178,47 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
       
       const response = await addResponseToSupabase(responseData);
       if (response) {
-        console.log(' Данные записаны в Supabase');
+        console.log('✅ Данные записаны в Supabase');
       } else {
-        console.log(' Ошибка записи в Supabase');
+        console.log('❌ Ошибка записи в Supabase');
       }
       
       // Также сохраняем в Google Sheets для админки
       await addRowToSheet(sheetsService, sheetId, CONFIG.RESPONSES_SHEET_RANGE, rowData);
-      console.log(' Данные записаны в Google Sheets (админка)');
+      console.log('✅ Данные записаны в Google Sheets (админка)');
     } catch (sheetsError) {
-      console.error(' Ошибка записи в Google Sheets:', sheetsError.message);
-      console.error(' Полная ошибка:', sheetsError);
+      console.error('❌ Ошибка записи в Google Sheets:', sheetsError.message);
+      console.error('❌ Полная ошибка:', sheetsError);
     }
 
     // Ответ пользователю
     if (selectedVacancy) {
       await ctx.reply(
-        ` **Ваш отклик отправлен!**\n\n` +
+        `🎉 **Ваш отклик отправлен!**\n\n` +
         `${selectedVacancy.emoji} **${selectedVacancy.title}**\n\n` +
-        ` Резюме успешно получено\n` +
-        ` Мы рассмотрим вашу кандидатуру\n` +
-        ` Свяжемся с вами в ближайшее время\n\n` +
-        ` Обычно мы отвечаем в течение 1-2 дней`,
+        `✅ Резюме успешно получено\n` +
+        `📋 Мы рассмотрим вашу кандидатуру\n` +
+        `📞 Свяжемся с вами в ближайшее время\n\n` +
+        `💡 Обычно мы отвечаем в течение 1-2 дней`,
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: ' Другие вакансии', callback_data: 'back_to_categories' }]
+              [{ text: '📋 Другие вакансии', callback_data: 'back_to_categories' }]
             ]
           }
         }
       );
     } else {
       await ctx.reply(
-        ' **Резюме получено!**\n\n' +
-        ' Ваше резюме сохранено в нашей базе.\n\n' +
-        ' Когда появится подходящая вакансия, мы сразу с вами свяжемся!',
+        '✅ **Резюме получено!**\n\n' +
+        '📋 Ваше резюме сохранено в нашей базе.\n\n' +
+        '💡 Когда появится подходящая вакансия, мы сразу с вами свяжемся!',
         {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: ' Посмотреть вакансии', callback_data: 'back_to_categories' }]
+              [{ text: '📋 Посмотреть вакансии', callback_data: 'back_to_categories' }]
             ]
           }
         }
@@ -226,9 +226,9 @@ export async function handleDocument(ctx, driveService, sheetsService, sheetId, 
     }
 
   } catch (error) {
-    console.error(' Ошибка обработки документа:', error);
+    console.error('❌ Ошибка обработки документа:', error);
     await ctx.reply(CONFIG.MESSAGES.ERROR);
   }
   
-  console.log(' Обработка документа завершена');
+  console.log('✅ Обработка документа завершена');
 }
