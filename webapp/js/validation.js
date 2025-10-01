@@ -229,7 +229,7 @@ export function debounceValidation(validator, delay = 300) {
 }
 
 /**
- * Валидация email в реальном времени
+ * Валидация email в реальном времени (визуально, без алерта)
  */
 export function validateEmailRealTime() {
     const emailInput = document.getElementById('email');
@@ -239,8 +239,12 @@ export function validateEmailRealTime() {
         const email = emailInput.value;
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Убираем агрессивную валидацию - не показываем алерт при вводе
+        // Валидация будет при переходе на следующий шаг
         if (email && !emailPattern.test(email)) {
-            showError('Введите корректный email адрес');
+            emailInput.style.borderColor = '#ff9800'; // Оранжевая рамка (предупреждение)
+        } else if (email) {
+            emailInput.style.borderColor = '#4CAF50'; // Зелёная рамка (валидно)
         }
     });
 
